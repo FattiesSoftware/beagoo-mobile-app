@@ -8,10 +8,15 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import React from "react";
 import styles from "../../assets/stylesheet/styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import facebookLogin from "../../utils/loginWithFacebook";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -19,9 +24,18 @@ const WelcomeScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [nextButtonDisabled, setNextButtonDisabled] = React.useState(true);
 
+  React.useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user != null) {
+        console.log("user is logged in");
+        Alert.alert("Dit me");
+      }
+    });
+  }, [firebase.auth().currentUser]);
+
   return (
     <>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.welcomeContainer}>
           <Image
             source={require("../../assets/welcome/welcome-banner.jpg")}
@@ -100,11 +114,12 @@ const WelcomeScreen = ({ navigation }) => {
             >
               <TouchableOpacity
                 disabled={nextButtonDisabled}
-                onPress={() =>
+                onPress={() => {
                   navigation.navigate("VerificationCode", {
                     phoneNumber: phoneNumber,
-                  })
-                }
+                  });
+                  //   handlePhoneContinue();
+                }}
               >
                 <Text
                   style={{
@@ -129,7 +144,10 @@ const WelcomeScreen = ({ navigation }) => {
                   borderRadius: 10,
                 }}
               >
-                <TouchableOpacity style={{ flexDirection: "row" }}>
+                <TouchableOpacity
+                  style={{ flexDirection: "row" }}
+                  onPress={facebookLogin}
+                >
                   <View
                     style={{
                       paddingVertical: 7,
