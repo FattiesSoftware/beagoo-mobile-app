@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/17230355/180727466-92551bf9-2b39-41d4-bdc8-fdc47321255f.png" />
+  <img src="https://user-images.githubusercontent.com/17230355/180727466-92551bf9-2b39-41d4-bdc8-fdc47321255f.png" width="180" height="180" />
 </p>
 # Beagoo Mobile App
 Mobile app version for Beagoo students-oriented social network. Developed in React Native and Expo. We love to open source ❤️
