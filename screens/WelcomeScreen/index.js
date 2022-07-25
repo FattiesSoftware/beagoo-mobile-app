@@ -152,7 +152,7 @@ const WelcomeScreen = ({ navigation }) => {
                 <Pressable
                   style={{ flexDirection: "row" }}
                   onPress={() => {
-                    facebookLogin();
+                    facebookLogin(setFbButtonDisabled);
                     setFbButtonDisabled(true);
                   }}
                   disabled={fbButtonDisabled}

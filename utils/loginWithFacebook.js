@@ -6,7 +6,7 @@ import firebaseConfig from "../firebase";
 
 firebase.initializeApp(firebaseConfig);
 
-const facebookLogin = async () => {
+const facebookLogin = async (setFbButtonDisabled) => {
   try {
     await Facebook.initializeAsync({
       appId: "1087511252159238",
@@ -27,6 +27,8 @@ const facebookLogin = async () => {
         .catch((error) => {
           console.log(error);
         });
+    } else {
+      setFbButtonDisabled(false);
     }
   } catch ({ message }) {
     console.log(`Facebook login error: ` + message);
