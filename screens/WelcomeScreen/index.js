@@ -21,62 +21,34 @@ import "firebase/compat/firestore";
 var pkg = require("../../package.json");
 console.log(pkg.version);
 
-const { width, height } = Dimensions.get("window");
+// const { width, height } = Dimensions.get("window");
 
 const WelcomeScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [nextButtonDisabled, setNextButtonDisabled] = React.useState(true);
   const [fbButtonDisabled, setFbButtonDisabled] = React.useState(false);
 
-  React.useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user != null) {
-        console.log("user is logged in");
-        navigation.navigate("OAuthAdditionalSteps");
-      }
-    });
-  }, [firebase.auth().currentUser]);
-
   return (
     <>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.welcomeContainer}>
+        <View style={styles.welcomeScreen.Container}>
           <Image
             source={require("../../assets/welcome/welcome-banner.jpg")}
-            style={styles.welcomeBanner}
+            style={styles.welcomeScreen.Banner}
           />
-          <View style={styles.welcomeMainSection}>
-            <Text style={styles.welcomeTitle}>Xin chào Beagooer!</Text>
-            <Text style={styles.welcomeMessage}>
+          <View style={styles.welcomeScreen.MainSection}>
+            <Text style={styles.welcomeScreen.Title}>Xin chào Beagooer!</Text>
+            <Text style={styles.welcomeScreen.Message}>
               Nhập số di động của bạn để tiếp tục
             </Text>
-            <View
-              style={{
-                backgroundColor: "#F7F7F6",
-                borderRadius: 10,
-                flexDirection: "row",
-                marginTop: 15,
-                borderWidth: 1,
-                borderColor: "#F0F0F0",
-              }}
-            >
-              <View
-                style={{
-                  padding: 13,
-                  borderRightWidth: 1,
-                  borderRightColor: "#F0F0F0",
-                }}
-              >
-                <Text style={{ fontSize: 18, fontWeight: "300" }}>🇻🇳 +84</Text>
+            <View style={styles.welcomeScreen.TextInputContainer}>
+              <View style={styles.welcomeScreen.CountryCode}>
+                <Text style={styles.welcomeScreen.CountryCodeText}>🇻🇳 +84</Text>
               </View>
               <View style={{ flex: 1 }}>
                 <TextInput
                   placeholder="Nhập số điện thoại"
-                  style={{
-                    fontSize: 18,
-                    width: "100%",
-                    padding: 13,
-                  }}
+                  style={styles.welcomeScreen.PhoneNumberInput}
                   keyboardType="phone-pad"
                   textContentType="telephoneNumber"
                   value={phoneNumber}
@@ -91,28 +63,16 @@ const WelcomeScreen = ({ navigation }) => {
                 />
               </View>
             </View>
-            <Text
-              style={{
-                marginTop: 13,
-                fontSize: 12,
-                lineHeight: 18,
-                fontWeight: "400",
-                color: "gray",
-              }}
-            >
+            <Text style={styles.welcomeScreen.TermsAndConditions}>
               Bằng việc tiếp tục, bạn đã đồng ý với{"\n"}
-              <Text style={{ color: "#4AA9E2" }}>
+              <Text style={styles.global.textLink}>
                 Chính sách bảo mật
               </Text> và{" "}
-              <Text style={{ color: "#4AA9E2" }}>Điều khoản sử dụng</Text>
+              <Text style={styles.global.textLink}>Điều khoản sử dụng</Text>
             </Text>
             <View
               style={[
-                {
-                  marginTop: 23,
-                  backgroundColor: "#51B7F2",
-                  borderRadius: 10,
-                },
+                styles.global.largeButtonPrimary,
                 nextButtonDisabled ? { opacity: 0.5 } : { opacity: 1 },
               ]}
             >
@@ -122,32 +82,15 @@ const WelcomeScreen = ({ navigation }) => {
                   navigation.navigate("VerificationCode", {
                     phoneNumber: phoneNumber,
                   });
-                  //   handlePhoneContinue();
                 }}
               >
-                <Text
-                  style={{
-                    padding: 13,
-                    fontSize: 16,
-                    fontWeight: "600",
-                    color: "white",
-                    textAlign: "center",
-                  }}
-                >
-                  Tiếp tục
-                </Text>
+                <Text style={styles.global.largeButtonText}>Tiếp tục</Text>
               </TouchableOpacity>
             </View>
-            <SafeAreaView
-              style={{ flex: 1, justifyContent: "flex-end", marginBottom: -20 }}
-            >
+            <SafeAreaView style={styles.welcomeScreen.BottomButtonContainer}>
               <View
                 style={[
-                  {
-                    marginTop: 23,
-                    backgroundColor: "#4267B2",
-                    borderRadius: 10,
-                  },
+                  styles.global.largeButtonFacebookLogin,
                   fbButtonDisabled ? { opacity: 0.5 } : { opacity: 1 },
                 ]}
               >
@@ -159,77 +102,30 @@ const WelcomeScreen = ({ navigation }) => {
                   }}
                   disabled={fbButtonDisabled}
                 >
-                  <View
-                    style={{
-                      paddingVertical: 7,
-                      paddingLeft: 10,
-                    }}
-                  >
+                  <View style={styles.global.loginProviderIconContainer}>
                     <Ionicons name="logo-facebook" size={28} color={"white"} />
                   </View>
-                  <Text
-                    style={{
-                      padding: 13,
-                      fontSize: 16,
-                      fontWeight: "600",
-                      color: "white",
-                      textAlign: "center",
-                      flex: 1,
-                    }}
-                  >
+                  <Text style={styles.global.loginProviderText}>
                     Đăng nhập bằng Facebook
                   </Text>
                   <ActivityIndicator
-                    style={{
-                      position: "absolute",
-                      right: 10,
-                      top: 0,
-                      bottom: 0,
-                    }}
+                    style={styles.global.whiteActivityIndicator}
                     color="#fff"
                     animating={fbButtonDisabled}
                   />
                 </Pressable>
               </View>
-              <View
-                style={{
-                  marginTop: 10,
-                  backgroundColor: "#F1F1F3",
-                  borderRadius: 10,
-                }}
-              >
+              <View style={styles.global.largeButtonDefault}>
                 <Pressable style={{ flexDirection: "row" }}>
-                  <View
-                    style={{
-                      paddingVertical: 7,
-                      paddingLeft: 10,
-                    }}
-                  >
+                  <View style={styles.global.loginProviderIconContainer}>
                     <Ionicons name="logo-apple" size={28} color={"black"} />
                   </View>
-                  <Text
-                    style={{
-                      padding: 13,
-                      fontSize: 16,
-                      fontWeight: "600",
-                      color: "black",
-                      textAlign: "center",
-                      flex: 1,
-                    }}
-                  >
+                  <Text style={styles.global.loginProviderTextBlack}>
                     Đăng nhập bằng Apple ID
                   </Text>
                 </Pressable>
               </View>
-              <Text
-                style={{
-                  fontWeight: "500",
-                  color: "gray",
-                  fontSize: 12,
-                  textAlign: "center",
-                  lineHeight: 35,
-                }}
-              >
+              <Text style={styles.global.versionText}>
                 {pkg.version + " " + pkg.versionType}
               </Text>
             </SafeAreaView>

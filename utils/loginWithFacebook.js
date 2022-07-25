@@ -22,7 +22,7 @@ const facebookLogin = async (setFbButtonDisabled) => {
         .auth()
         .signInWithCredential(credential)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
         })
         .catch((error) => {
           console.log(error);

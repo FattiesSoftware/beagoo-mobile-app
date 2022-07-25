@@ -13,6 +13,7 @@
     "test": "echo \"Error: no test specified\""
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.7",
     "@react-native-firebase/app": "^15.2.0",
     "@react-native-firebase/auth": "^15.2.0",
     "@react-native-firebase/crashlytics": "^15.2.0",

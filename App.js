@@ -1,21 +1,35 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import VerificationCodeScreen from "./screens/VerificationCodeScreen";
 import AnimatedSplash from "react-native-animated-splash-screen";
 import OAuthAddSteps from "./screens/OAuthAdditionalStep";
-
-const Stack = createNativeStackNavigator();
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+import { navigationRef, navigate } from "./utils/RootNavigation";
 
 export default function App() {
   const [isSplashReady, setIsSplashReady] = React.useState(false);
+
+  const Stack = createNativeStackNavigator();
+  // const nav = useNavigation();
 
   React.useEffect(() => {
     setTimeout(() => {
       setIsSplashReady(true);
     }, 1300);
-  });
+    console.log(firebase.auth().currentUser);
+    const authStateSubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user != null) {
+        console.log("user is logged in");
+        navigate("OAuthAdditionalSteps");
+        console.log(firebase.auth().currentUser);
+      }
+    });
+    return authStateSubscribe;
+  }, [firebase.auth().currentUser]);
 
   return (
     <AnimatedSplash
@@ -26,7 +40,7 @@ export default function App() {
       logoHeight={150}
       logoWidth={150}
     >
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator>
           <Stack.Screen
             name="Welcome"
