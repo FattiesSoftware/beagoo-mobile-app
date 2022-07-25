@@ -9,6 +9,9 @@ Beagoo
 <p align="center"><strong>Be a good netizen</strong><br />
 A brand new young and trendy Vietnamese student-oriented social network platform. Developed in React Native and Expo. We love to open source ❤️</p>
 </div>
+
+## Screenshots
+
 <p align="center">
-<img src="https://user-images.githubusercontent.com/17230355/180727302-80ebadad-73d8-4c86-8358-bd7ba129a8a9.png" />
+<img src="https://user-images.githubusercontent.com/17230355/180731047-7bbe7895-79fd-4a6a-af03-4ad172794e5b.png" style="width: 300px" />
 </p>
