@@ -18,6 +18,8 @@ import facebookLogin from "../../utils/loginWithFacebook";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+var pkg = require("../../package.json");
+console.log(pkg.version);
 
 const { width, height } = Dimensions.get("window");
 
@@ -228,7 +230,7 @@ const WelcomeScreen = ({ navigation }) => {
                   lineHeight: 35,
                 }}
               >
-                0.1.0 Pre-release Beta
+                {pkg.version + " " + pkg.versionType}
               </Text>
             </SafeAreaView>
           </View>
