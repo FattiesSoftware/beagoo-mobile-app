@@ -9,7 +9,7 @@
     "eject": "expo eject",
     "np": "np --no-publish",
     "postversion": "react-native-version",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\""
   },
   "dependencies": {
     "@react-native-firebase/app": "^15.2.0",
