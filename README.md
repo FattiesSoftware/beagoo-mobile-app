@@ -16,8 +16,6 @@ A new Vietnamese student-oriented social network platform<br><br>
 <img src="https://user-images.githubusercontent.com/17230355/180739107-93e94725-c97d-46bb-9f73-399fd2bc6961.png" width="100" height="53" />
 </p>
 
-
-
 </div>
 
 ## Screenshots

@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import VerificationCodeScreen from "./screens/VerificationCodeScreen";
-import { CardStyleInterpolators } from "@react-navigation/stack";
 import AnimatedSplash from "react-native-animated-splash-screen";
 import OAuthAddSteps from "./screens/OAuthAdditionalStep";
 
