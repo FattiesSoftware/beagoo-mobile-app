@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "987880042203",
+    "project_id": "beagoo",
+    "storage_bucket": "beagoo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987880042203:android:90554650ccbb92f95c26fe",
+        "android_client_info": {
+          "package_name": "com.fatties.beagoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "987880042203-dpbviabioikr6re4ocmv39u368eltsh1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5L4mfADqztEICEHK7Db3fCZ0jqLrVqko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "987880042203-dpbviabioikr6re4ocmv39u368eltsh1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "987880042203-u81ssk1208liiuspeop520qplph8sdbv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fatties.beagoo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

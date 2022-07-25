@@ -20,6 +20,7 @@
     <string>0.1.0</string>
     <key>CFBundleSignature</key>
     <string>????</string>
+    
     <key>CFBundleURLTypes</key>
     <array>
       <dict>
@@ -36,32 +37,17 @@
       </dict>
       <dict>
         <key>CFBundleURLSchemes</key>
-        <array>
-          <string>fb1087511252159238</string>
-        </array>
+          <array>
+            <string>fb1087511252159238</string>
+          </array>
       </dict>
     </array>
-    <key>CFBundleVersion</key>
-    <string>1</string>
-    <key>FacebookAdvertiserIDCollectionEnabled</key>
-    <false/>
     <key>FacebookAppID</key>
     <string>1087511252159238</string>
-    <key>FacebookAutoInitEnabled</key>
-    <false/>
-    <key>FacebookAutoLogAppEventsEnabled</key>
-    <false/>
-    <key>FacebookClientToken</key>
-    <string>a6400dc5a1640d78f78cc155a0a96b14</string>
     <key>FacebookDisplayName</key>
     <string>Beagoo</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>fbapi</string>
-      <string>fb-messenger-api</string>
-      <string>fbauth2</string>
-      <string>fbshareextension</string>
-    </array>
+    <key>CFBundleVersion</key>
+    <string>1</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSAppTransportSecurity</key>

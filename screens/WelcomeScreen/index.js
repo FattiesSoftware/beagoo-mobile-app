@@ -8,7 +8,8 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
-  Alert,
+  ActivityIndicator,
+  Pressable,
 } from "react-native";
 import React from "react";
 import styles from "../../assets/stylesheet/styles";
@@ -23,12 +24,13 @@ const { width, height } = Dimensions.get("window");
 const WelcomeScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [nextButtonDisabled, setNextButtonDisabled] = React.useState(true);
+  const [fbButtonDisabled, setFbButtonDisabled] = React.useState(false);
 
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
         console.log("user is logged in");
-        Alert.alert("Dit me");
+        navigation.navigate("OAuthAdditionalSteps");
       }
     });
   }, [firebase.auth().currentUser]);
@@ -65,14 +67,14 @@ const WelcomeScreen = ({ navigation }) => {
               >
                 <Text style={{ fontSize: 18, fontWeight: "300" }}>🇻🇳 +84</Text>
               </View>
-              <View
-                style={{
-                  padding: 13,
-                }}
-              >
+              <View style={{ flex: 1 }}>
                 <TextInput
                   placeholder="Nhập số điện thoại"
-                  style={{ fontSize: 18 }}
+                  style={{
+                    fontSize: 18,
+                    width: "100%",
+                    padding: 13,
+                  }}
                   keyboardType="phone-pad"
                   textContentType="telephoneNumber"
                   value={phoneNumber}
@@ -138,21 +140,27 @@ const WelcomeScreen = ({ navigation }) => {
               style={{ flex: 1, justifyContent: "flex-end", marginBottom: -20 }}
             >
               <View
-                style={{
-                  marginTop: 23,
-                  backgroundColor: "#4267B2",
-                  borderRadius: 10,
-                }}
+                style={[
+                  {
+                    marginTop: 23,
+                    backgroundColor: "#4267B2",
+                    borderRadius: 10,
+                  },
+                  fbButtonDisabled ? { opacity: 0.5 } : { opacity: 1 },
+                ]}
               >
-                <TouchableOpacity
+                <Pressable
                   style={{ flexDirection: "row" }}
-                  onPress={facebookLogin}
+                  onPress={() => {
+                    facebookLogin();
+                    setFbButtonDisabled(true);
+                  }}
+                  disabled={fbButtonDisabled}
                 >
                   <View
                     style={{
                       paddingVertical: 7,
                       paddingLeft: 10,
-                      //   backgroundColor: "red",
                     }}
                   >
                     <Ionicons name="logo-facebook" size={28} color={"white"} />
@@ -169,7 +177,17 @@ const WelcomeScreen = ({ navigation }) => {
                   >
                     Đăng nhập bằng Facebook
                   </Text>
-                </TouchableOpacity>
+                  <ActivityIndicator
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: 0,
+                      bottom: 0,
+                    }}
+                    color="#fff"
+                    animating={fbButtonDisabled}
+                  />
+                </Pressable>
               </View>
               <View
                 style={{
@@ -178,12 +196,11 @@ const WelcomeScreen = ({ navigation }) => {
                   borderRadius: 10,
                 }}
               >
-                <TouchableOpacity style={{ flexDirection: "row" }}>
+                <Pressable style={{ flexDirection: "row" }}>
                   <View
                     style={{
                       paddingVertical: 7,
                       paddingLeft: 10,
-                      //   backgroundColor: "red",
                     }}
                   >
                     <Ionicons name="logo-apple" size={28} color={"black"} />
@@ -200,7 +217,7 @@ const WelcomeScreen = ({ navigation }) => {
                   >
                     Đăng nhập bằng Apple ID
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
               <Text
                 style={{
