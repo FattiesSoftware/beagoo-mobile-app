@@ -2,7 +2,7 @@
   "expo": {
     "name": "Beagoo",
     "slug": "beagoo",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
@@ -28,7 +30,8 @@
           }
         ]
       },
-      "bundleIdentifier": "com.fatties.beagoo"
+      "bundleIdentifier": "com.fatties.beagoo",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
@@ -36,8 +39,11 @@
         "backgroundColor": "#FFFFFF"
       },
       "googleServicesFile": "./google-services.json",
-      "permissions": ["android.permission.INTERNET"],
-      "package": "com.fatties.beagoo"
+      "permissions": [
+        "android.permission.INTERNET"
+      ],
+      "package": "com.fatties.beagoo",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
