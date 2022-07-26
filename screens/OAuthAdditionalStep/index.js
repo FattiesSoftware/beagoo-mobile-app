@@ -5,12 +5,32 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  StatusBar,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import styles from "../../assets/stylesheet/styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const OAuthAddSteps = () => {
+  const [nextButtonDisabled, setNextButtonDisabled] = React.useState(true);
+  const [name, setName] = React.useState("");
+
+  StatusBar.setBarStyle("dark-content", true);
+
+  const getName = async () => {
+    await AsyncStorage.getItem("user").then((user) => {
+      if (user != "null") {
+        setName(JSON.parse(user).displayName);
+      }
+    });
+  };
+
+  React.useEffect(() => {
+    getName();
+  }, []);
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.additionalScreen.container}>
@@ -53,7 +73,9 @@ const OAuthAddSteps = () => {
                       fontWeight: "600",
                       color: "#333333",
                     }}
+                    value={name}
                     placeholderTextColor={"#A9A9A9"}
+                    onChangeText={(text) => setName(text)}
                   />
                 </View>
               </View>
@@ -101,6 +123,25 @@ const OAuthAddSteps = () => {
               </Text>
               <View style={{ flexDirection: "row" }}></View>
             </View>
+          </View>
+          <View style={{ flex: 1 }}></View>
+          <View
+            style={[
+              styles.global.largeButtonPrimary,
+              nextButtonDisabled ? { opacity: 0.5 } : { opacity: 1 },
+              { justifyContent: "flex-end" },
+            ]}
+          >
+            <TouchableOpacity
+              disabled={nextButtonDisabled}
+              onPress={() => {
+                navigation.navigate("VerificationCode", {
+                  phoneNumber: phoneNumber,
+                });
+              }}
+            >
+              <Text style={styles.global.largeButtonText}>Tiếp tục</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </SafeAreaView>

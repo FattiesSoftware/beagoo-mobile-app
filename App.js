@@ -21,7 +21,7 @@ export default function App() {
     if (isSignedIn) {
       console.log("user is logged in");
       RootNavigation.navigate("OAuthAdditionalSteps");
-      console.log(user);
+      console.log("donenee! :    ", user);
     }
   }, [isSignedIn]);
 
