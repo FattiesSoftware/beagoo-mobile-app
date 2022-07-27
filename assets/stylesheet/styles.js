@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: "white",
+      paddingTop: statusBarHeight,
     },
     mainSection: {
       paddingHorizontal: 25,

@@ -1,15 +1,45 @@
 import { useState, useEffect } from "react";
 import firebase, { auth } from "firebase/compat/app";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { async } from "@firebase/util";
+import firebaseConfig from "../firebase";
+
+firebase.initializeApp(firebaseConfig);
 
 export function useAuth() {
+  const db = firebase.firestore();
+  // const user = firebase.auth().currentUser;
+
+  // console.log("db: ", db);
+  // console.log("FB User:    => ", firebase.auth());
+
   const [authState, setAuthState] = useState({
     isSignedIn: false,
     pending: true,
     user: null,
     additionalSteps: true,
   });
+
+  const checkForAdditionalSteps = () => {
+    console.log("executing check");
+    console.log("auth staet user: ", user);
+    if (user != null) {
+      console.log("uid :  ", user.uid);
+      db.collection("users")
+        .doc(user.uid)
+        .get()
+        .then((res) => {
+          // console.log("res:   ", res.data());
+          console.log("additional steps: ", res.data().additionalSteps);
+          if (res.data().additionalSteps) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+    } else {
+      return true;
+    }
+  };
 
   const readStorage = async () => {
     try {
@@ -19,17 +49,20 @@ export function useAuth() {
           isSignedIn: true,
           pending: false,
           user: JSON.parse(user),
-          additionalSteps: null,
+          additionalSteps: checkForAdditionalSteps(),
         });
         console.log("user found, now returning true");
-        console.log("data from storage: ", await AsyncStorage.getItem("user"));
+        // console.log(
+        //   "data from storage: ",
+        //   JSON.parse(await AsyncStorage.getItem("user"))
+        // );
         return true;
       } else {
         setAuthState({
           isSignedIn: false,
           pending: false,
           user: null,
-          additionalSteps: null,
+          additionalSteps: checkForAdditionalSteps(),
         });
         console.log("user login state not found, now returning false");
         return false;
@@ -47,21 +80,32 @@ export function useAuth() {
     }
   };
 
+  const signOutUser = async () => {
+    console.log("signing out user");
+    await AsyncStorage.clear();
+    firebase.auth().signOut();
+  };
+
   useEffect(() => {
-    async function clear() {
-      await AsyncStorage.clear();
-      firebase.auth().signOut();
-    }
     readStorage()
       .then((isSignedIn) => {
         if (isSignedIn) {
           // do something...
-          // clear();
+          console.log("is signed in hook true");
+          // setAuthState({
+          //   ...authState,
+          //   additionalSteps: checkForAdditionalSteps(),
+          // });
         } else {
           const unregisterAuthObserver = firebase
             .auth()
             .onAuthStateChanged((user) => {
-              setAuthState({ user, pending: false, isSignedIn: !!user });
+              setAuthState({
+                user,
+                pending: false,
+                isSignedIn: !!user,
+                additionalSteps: true,
+              });
               writeStorage(user);
             });
           return () => unregisterAuthObserver();
@@ -72,7 +116,7 @@ export function useAuth() {
       });
   }, []);
 
-  return { auth, ...authState };
+  return { auth, ...authState, signOutUser };
 }
 
 export default useAuth;

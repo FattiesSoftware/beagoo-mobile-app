@@ -10,6 +10,7 @@ import {
   Keyboard,
   ActivityIndicator,
   Pressable,
+  StatusBar,
 } from "react-native";
 import React from "react";
 import styles from "../../assets/stylesheet/styles";
@@ -28,8 +29,11 @@ const WelcomeScreen = ({ navigation }) => {
   const [nextButtonDisabled, setNextButtonDisabled] = React.useState(true);
   const [fbButtonDisabled, setFbButtonDisabled] = React.useState(false);
 
+  StatusBar.setBarStyle("light-content", true);
+
   return (
     <>
+      <StatusBar translucent backgroundColor="transparent" />
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.welcomeScreen.Container}>
           <Image

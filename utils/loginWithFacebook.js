@@ -43,12 +43,14 @@ const facebookLogin = async (setFbButtonDisabled) => {
         })
         .catch((error) => {
           console.log(error);
+          setFbButtonDisabled(false);
         });
     } else {
       setFbButtonDisabled(false);
     }
   } catch ({ message }) {
     console.log(`Facebook login error: ` + message);
+    setFbButtonDisabled(false);
   }
 };
 

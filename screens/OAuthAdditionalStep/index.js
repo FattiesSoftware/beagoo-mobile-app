@@ -12,12 +12,17 @@ import React from "react";
 import styles from "../../assets/stylesheet/styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
+const statusBarHeight = Constants.statusBarHeight;
+import useAuth from "../../hooks/useAuth";
 
 const OAuthAddSteps = () => {
   const [nextButtonDisabled, setNextButtonDisabled] = React.useState(true);
   const [name, setName] = React.useState("");
 
   StatusBar.setBarStyle("dark-content", true);
+
+  const { signOutUser } = useAuth();
 
   const getName = async () => {
     await AsyncStorage.getItem("user").then((user) => {
@@ -34,10 +39,13 @@ const OAuthAddSteps = () => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.additionalScreen.container}>
+        <StatusBar translucent backgroundColor="transparent" />
         <View style={styles.additionalScreen.mainSection}>
-          <Text style={styles.additionalScreen.title}>
-            Cập nhật thông tin 📝
-          </Text>
+          <TouchableWithoutFeedback onPress={signOutUser}>
+            <Text style={styles.additionalScreen.title}>
+              Cập nhật thông tin 📝
+            </Text>
+          </TouchableWithoutFeedback>
           <Text style={styles.additionalScreen.secondary}>
             Hãy cập nhật thông tin để mọi người dễ dàng kết nối với bạn hơn nhé
           </Text>
