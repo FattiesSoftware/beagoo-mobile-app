@@ -9,27 +9,50 @@ import OAuthAddSteps from "./screens/OAuthAdditionalStep";
 import * as RootNavigation from "./utils/RootNavigation";
 import { useAuth } from "./hooks/useAuth";
 import HomeScreen from "./screens/Home";
+import firebase from "firebase/compat/app";
+import firebaseConfig from "./firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 export default function App() {
   const [isSplashReady, setIsSplashReady] = React.useState(false);
+  const [isAddNeeded, setIsAddNeeded] = React.useState(true);
 
   const Stack = createNativeStackNavigator();
-  const { pending, isSignedIn, user, auth, additionalSteps } = useAuth();
+  const { isSignedIn, user } = useAuth();
+
+  const check = async () => {
+    db.collection("users")
+      .doc(JSON.parse(await AsyncStorage.getItem("user-more")).uid)
+      .get()
+      .then((res) => {
+        // console.log("res:   ", res.data());
+        console.log(
+          "now restureuingi addidanstep ",
+          res.data().additionalSteps
+        );
+        setIsAddNeeded(res.data().additionalSteps);
+        // return res.data().additionalSteps;
+      });
+  };
 
   React.useEffect(() => {
+    check();
     setTimeout(() => {
       setIsSplashReady(true);
     }, 1000);
     if (isSignedIn) {
       console.log("\n\nFirst Load\n====================");
       console.log("user is logged in");
-      if (additionalSteps) {
+      if (isAddNeeded) {
         RootNavigation.navigate("OAuthAdditionalSteps");
-        // console.log("app index add steps2: ", additionalSteps);
+      } else {
+        RootNavigation.navigate("Home");
       }
-      console.log("app index add steps: ", additionalSteps);
     }
-  }, [isSignedIn]);
+  }, [isSignedIn, isAddNeeded]);
 
   return (
     <>
@@ -43,7 +66,7 @@ export default function App() {
       >
         <NavigationContainer ref={RootNavigation.navigationRef}>
           <Stack.Navigator>
-            {isSignedIn && additionalSteps ? (
+            {isSignedIn && isAddNeeded ? (
               <>
                 <Stack.Screen
                   name="OAuthAdditionalSteps"
@@ -54,9 +77,9 @@ export default function App() {
                   }}
                 />
               </>
-            ) : isSignedIn && !additionalSteps ? (
+            ) : isSignedIn && !isAddNeeded ? (
               <>
-                <Stack.Screen name="Home" component={HomeScreen}></Stack.Screen>
+                <Stack.Screen name="Home" component={HomeScreen} />
               </>
             ) : (
               <>

@@ -4,77 +4,66 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import firebaseConfig from "../firebase";
 
 firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 export function useAuth() {
-  const db = firebase.firestore();
-  // const user = firebase.auth().currentUser;
-
-  // console.log("db: ", db);
-  // console.log("FB User:    => ", firebase.auth());
-
   const [authState, setAuthState] = useState({
     isSignedIn: false,
-    pending: true,
     user: null,
     additionalSteps: true,
   });
 
-  const checkForAdditionalSteps = () => {
-    console.log("executing check");
-    console.log("auth staet user: ", user);
-    if (user != null) {
-      console.log("uid :  ", user.uid);
-      db.collection("users")
-        .doc(user.uid)
-        .get()
-        .then((res) => {
-          // console.log("res:   ", res.data());
-          console.log("additional steps: ", res.data().additionalSteps);
-          if (res.data().additionalSteps) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-    } else {
-      return true;
-    }
+  const checkForAdditionalSteps = async () => {
+    // console.log("executing check for additional steps");
+    // const currUser = JSON.parse(await AsyncStorage.getItem("user-more"));
+    // if (currUser != "null" && currUser != null) {
+    //   console.log("uid :  ", currUser.uid);
+    //   db.collection("users")
+    //     .doc(currUser.uid)
+    //     .get()
+    //     .then((res) => {
+    //       // console.log("res:   ", res.data());
+    //       console.log(
+    //         "now restureuingi addidanstep ",
+    //         res.data().additionalSteps
+    //       );
+    //       return res.data().additionalSteps;
+    //     });
+    //   return true;
+    // } else {
+    //   console.log("failde null omggg...");
+    //   return true;
+    // }
   };
 
   const readStorage = async () => {
-    try {
-      const user = await AsyncStorage.getItem("user");
-      if (user != "null" && user != null) {
-        setAuthState({
-          isSignedIn: true,
-          pending: false,
-          user: JSON.parse(user),
-          additionalSteps: checkForAdditionalSteps(),
-        });
-        console.log("user found, now returning true");
-        // console.log(
-        //   "data from storage: ",
-        //   JSON.parse(await AsyncStorage.getItem("user"))
-        // );
-        return true;
-      } else {
-        setAuthState({
-          isSignedIn: false,
-          pending: false,
-          user: null,
-          additionalSteps: checkForAdditionalSteps(),
-        });
-        console.log("user login state not found, now returning false");
-        return false;
-      }
-    } catch (error) {
-      console.log(error);
+    const userData = await AsyncStorage.getItem("current-user");
+    if (userData != "null" && userData != null) {
+      setAuthState({
+        isSignedIn: true,
+        user: JSON.parse(userData),
+        additionalSteps: true,
+      });
+      console.log("user login state is *found*, now returning true");
+      return true;
+    } else {
+      setAuthState({
+        isSignedIn: false,
+        user: null,
+        additionalSteps: true,
+      });
+      console.log("user login state not found, now returning false");
+      return false;
     }
   };
 
-  const writeStorage = async (user) => {
+  const writeStorage = async (type, data) => {
     try {
-      await AsyncStorage.setItem("user", JSON.stringify(user));
+      if (type == "credential") {
+        await AsyncStorage.setItem("current-user", JSON.stringify(data));
+      } else {
+        await AsyncStorage.setItem("user-more", JSON.stringify(data));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -92,21 +81,19 @@ export function useAuth() {
         if (isSignedIn) {
           // do something...
           console.log("is signed in hook true");
-          // setAuthState({
-          //   ...authState,
-          //   additionalSteps: checkForAdditionalSteps(),
-          // });
+          // signOutUser();
         } else {
           const unregisterAuthObserver = firebase
             .auth()
             .onAuthStateChanged((user) => {
               setAuthState({
                 user,
-                pending: false,
                 isSignedIn: !!user,
                 additionalSteps: true,
               });
-              writeStorage(user);
+              writeStorage("credential", user);
+              console.log("firebase curenus:  ", firebase.auth().currentUser);
+              writeStorage("more", firebase.auth().currentUser);
             });
           return () => unregisterAuthObserver();
         }
@@ -115,8 +102,7 @@ export function useAuth() {
         console.log(error);
       });
   }, []);
-
-  return { auth, ...authState, signOutUser };
+  return { auth, ...authState, signOutUser, checkForAdditionalSteps };
 }
 
 export default useAuth;
