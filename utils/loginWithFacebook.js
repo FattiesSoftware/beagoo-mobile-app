@@ -3,11 +3,15 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import firebaseConfig from "../firebase";
-// import { getAdditionalUserInfo } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
+
+const setItem = async (value) => {
+  await AsyncStorage.setItem("new-user", JSON.stringify(value));
+};
 
 const facebookLogin = async (setFbButtonDisabled) => {
   try {
@@ -30,15 +34,34 @@ const facebookLogin = async (setFbButtonDisabled) => {
           console.log("additional info: ", res.additionalUserInfo);
           console.log("credential info:   ", credential);
           if (res.additionalUserInfo.isNewUser) {
-            db.collection("users").doc(res.user.uid).set({
-              name: res.user.displayName,
-              email: res.user.email,
-              photo: res.user.photoURL,
-              createdAt: new Date(),
-              additionalSteps: true,
-            });
+            setItem(true);
+            db.collection("users")
+              .doc(res.user.uid)
+              .set({
+                name: res.user.displayName,
+                email: res.user.email,
+                photo: res.user.photoURL,
+                createdAt: new Date(),
+                additionalSteps: true,
+                needToUpdateAvatar: true,
+              })
+              .then(() => {
+                db.collection("posts").add({
+                  type: "avatar",
+                  image: res.user.photoURL,
+                  owner: res.user.uid,
+                  ownerName: res.user.displayName,
+                  shouldShowOnFeed: true,
+                  caption: "",
+                  like: 0,
+                  comment: 0,
+                  share: 0,
+                  createdAt: new Date(),
+                });
+              });
           } else {
             console.log("user already exists");
+            setItem(false);
           }
         })
         .catch((error) => {

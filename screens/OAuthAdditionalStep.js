@@ -9,40 +9,76 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import React from "react";
-import styles from "../../assets/stylesheet/styles";
+import styles from "../assets/stylesheet/styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 const statusBarHeight = Constants.statusBarHeight;
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 import DatePicker from "react-native-date-picker";
 import moment from "moment";
+import firebase from "firebase/compat/app";
+import firebaseConfig from "../firebase";
 
-const OAuthAddSteps = () => {
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const OAuthAddSteps = ({ navigation }) => {
   const [nextButtonDisabled, setNextButtonDisabled] = React.useState(true);
   const [name, setName] = React.useState("");
   const [gender, setGender] = React.useState("");
   const [date, setDate] = React.useState(new Date());
   const [open, setOpen] = React.useState(false);
   const [dateValue, setDateValue] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   // moment(date).format("DD/MM/YYYY")
   StatusBar.setBarStyle("dark-content", true);
 
   const { signOutUser } = useAuth();
 
   const getName = async () => {
-    await AsyncStorage.getItem("user").then((user) => {
-      if (user != "null") {
-        setName(JSON.parse(user).displayName);
-      }
-    });
+    if (name == "") {
+      await AsyncStorage.getItem("current-user").then((user) => {
+        if (user != "null") {
+          setName(JSON.parse(user).displayName);
+        }
+      });
+    }
+  };
+
+  const sendData = async () => {
+    // handle send data to server
+    db.collection("users")
+      .doc(JSON.parse(await AsyncStorage.getItem("user-more")).uid)
+      .update({
+        additionalSteps: false,
+        dateOfBirth: date,
+        name: name,
+        gender: gender,
+        needToUpdateAvatar: true,
+      })
+      .then((res) => console.log(res))
+      .finally(() => {
+        // setLoading(false);
+        navigation.navigate("AddProfilePicture");
+      })
+      .catch((err) => console.log(err));
   };
 
   React.useEffect(() => {
     getName();
   }, []);
+
+  React.useEffect(() => {
+    if (name != "" && dateValue != "" && gender != "") {
+      setNextButtonDisabled(false);
+    } else {
+      setNextButtonDisabled(true);
+    }
+  }, [name, dateValue, gender]);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -151,6 +187,9 @@ const OAuthAddSteps = () => {
                     }}
                     mode="date"
                     locale="vi"
+                    title={"Chọn ngày sinh"}
+                    confirmText="Xác nhận"
+                    cancelText="Hủy bỏ"
                   />
                 </View>
               </View>
@@ -199,7 +238,7 @@ const OAuthAddSteps = () => {
                       }}
                     >
                       <Image
-                        source={require("../../assets/welcome/male.png")}
+                        source={require("../assets/welcome/male.png")}
                         style={[
                           { width: 70, height: 88 },
                           gender == "male"
@@ -252,7 +291,7 @@ const OAuthAddSteps = () => {
                       }}
                     >
                       <Image
-                        source={require("../../assets/welcome/female.png")}
+                        source={require("../assets/welcome/female.png")}
                         style={[
                           { width: 56, height: 88 },
                           gender == "female"
@@ -287,12 +326,18 @@ const OAuthAddSteps = () => {
             <TouchableOpacity
               disabled={nextButtonDisabled}
               onPress={() => {
-                navigation.navigate("VerificationCode", {
-                  phoneNumber: phoneNumber,
-                });
+                setLoading(true);
+                setNextButtonDisabled(true);
+                sendData();
+                // navigation.navigate("AddProfilePicture");
               }}
             >
               <Text style={styles.global.largeButtonText}>Tiếp tục</Text>
+              <ActivityIndicator
+                style={styles.global.whiteActivityIndicator}
+                color="#fff"
+                animating={loading}
+              />
             </TouchableOpacity>
           </View>
         </View>

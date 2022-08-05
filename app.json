@@ -25,6 +25,9 @@
           },
           {
             "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
+          },
+          {
+            "NSCameraUsageDescription": "Beagoo sử dụng ảnh của bạn để tạo bài viết mới và cập nhật ảnh đại diện."
           }
         ]
       },
@@ -37,7 +40,12 @@
         "backgroundColor": "#FFFFFF"
       },
       "googleServicesFile": "./google-services.json",
-      "permissions": ["android.permission.INTERNET"],
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.CAMERA",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE"
+      ],
       "package": "com.fatties.beagoo",
       "versionCode": 2
     },

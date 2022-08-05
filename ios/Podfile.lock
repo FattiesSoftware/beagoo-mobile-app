@@ -34,7 +34,7 @@ PODS:
     - ExpoModulesCore
     - React-Core
   - EXStructuredHeaders (2.2.1)
-  - EXUpdates (0.13.3):
+  - EXUpdates (0.13.4):
     - ASN1Decoder (~> 1.8)
     - EASClient
     - EXManifests
@@ -362,7 +362,12 @@ PODS:
     - glog
   - react-native-date-picker (4.2.5):
     - React-Core
-  - react-native-safe-area-context (4.3.1):
+  - react-native-image-crop-tools (1.6.2):
+    - React
+    - TOCropViewController (= 2.5.3)
+  - react-native-image-picker (4.8.4):
+    - React-Core
+  - react-native-safe-area-context (4.2.4):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -451,13 +456,47 @@ PODS:
     - Firebase/Performance (= 9.3.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.5.0):
+  - RNGestureHandler (2.2.1):
     - React-Core
-  - RNScreens (3.15.0):
+  - RNProgressHud (1.3.2):
+    - React-Core
+    - SVProgressHUD
+  - RNReanimated (2.9.1):
+    - DoubleConversion
+    - FBLazyVector
+    - FBReactNativeSpec
+    - glog
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-Core/DevSupport
+    - React-Core/RCTWebSocket
+    - React-CoreModules
+    - React-cxxreact
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - RNScreens (3.11.1):
     - React-Core
     - React-RCTImage
+  - RNSVG (12.4.3):
+    - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
+  - SVProgressHUD (2.2.5)
+  - TOCropViewController (2.5.3)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -499,6 +538,8 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
+  - react-native-image-crop-tools (from `../node_modules/react-native-image-crop-tools`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -518,7 +559,10 @@ DEPENDENCIES:
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBPerf (from `../node_modules/@react-native-firebase/perf`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNProgressHud (from `../node_modules/progress-hud`)
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -544,6 +588,8 @@ SPEC REPOS:
     - GTMSessionFetcher
     - nanopb
     - PromisesObjC
+    - SVProgressHUD
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   boost:
@@ -618,6 +664,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
+  react-native-image-crop-tools:
+    :path: "../node_modules/react-native-image-crop-tools"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-perflogger:
@@ -656,8 +706,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/perf"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNProgressHud:
+    :path: "../node_modules/progress-hud"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -682,7 +738,7 @@ SPEC CHECKSUMS:
   ExpoModulesCore: e4278a668e8c13c0269ed8b8a4200989deea2973
   EXSplashScreen: 34f460788db8d682883871708dddbfac72095bb7
   EXStructuredHeaders: 5d86829469399370a9fc7cb1e4391b09de87681d
-  EXUpdates: 084edfaac900e6bc77ab4027eaf7437a4236b8c3
+  EXUpdates: f8d0170faaf3032912284693ef07f4d57288e14e
   EXUpdatesInterface: 0b101ace1dbfa0f64260a5df31c71d03c66cca54
   FacebookSDK: 4b9bb8e2824898b47f18c666dc145c09b40609e6
   FBLazyVector: a7a655862f6b09625d11c772296b01cd5164b648
@@ -720,7 +776,9 @@ SPEC CHECKSUMS:
   React-jsinspector: c5989c77cb89ae6a69561095a61cce56a44ae8e8
   React-logger: a0833912d93b36b791b7a521672d8ee89107aff1
   react-native-date-picker: 55193347d8d0f40948f441ffd4e5db6f0a8fbe13
-  react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
+  react-native-image-crop-tools: 06b171ac13f1cd520e633a0d190c00f664b4cb79
+  react-native-image-picker: cffb727cf2f59bd5c0408e30b3dbe0b935f88835
+  react-native-safe-area-context: f98b0b16d1546d208fc293b4661e3f81a895afd9
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
   React-RCTActionSheet: 547fe42fdb4b6089598d79f8e1d855d7c23e2162
   React-RCTAnimation: bc9440a1c37b06ae9ebbb532d244f607805c6034
@@ -738,9 +796,14 @@ SPEC CHECKSUMS:
   RNFBAuth: 9f6af7292af7a6550af59b5e020c06cf1317b6b0
   RNFBCrashlytics: aa1a64e190bc8c1cf33fd2f4df849e783745a291
   RNFBPerf: cfe9e8bd3383ede2b0cb3bbd2f2376918f67f915
-  RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
-  RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
+  RNGestureHandler: 1dc1ea9d4b64f999042afafbaccf5b143f0b2fa2
+  RNProgressHud: 2f93a3ecc103c646602df378cd34d21c11ee7938
+  RNReanimated: 5c8c17e26787fd8984cd5accdc70fef2ca70aafd
+  RNScreens: 4d83613b50b74ed277026375dc0810893b0c347f
+  RNSVG: f3b60aeeaa81960e2e0536c3a9eef50b667ef3a9
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
 
 PODFILE CHECKSUM: ff4026051f235b4b24513a3eb344adae43e9d0c9

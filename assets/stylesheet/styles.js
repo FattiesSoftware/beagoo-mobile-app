@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   global: {
     largeButtonPrimary: {
       marginTop: 23,
-      backgroundColor: "#51B7F2",
+      backgroundColor: "#10A7FF",
       borderRadius: 10,
     },
     largeButtonText: {

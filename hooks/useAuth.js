@@ -10,31 +10,7 @@ export function useAuth() {
   const [authState, setAuthState] = useState({
     isSignedIn: false,
     user: null,
-    additionalSteps: true,
   });
-
-  const checkForAdditionalSteps = async () => {
-    // console.log("executing check for additional steps");
-    // const currUser = JSON.parse(await AsyncStorage.getItem("user-more"));
-    // if (currUser != "null" && currUser != null) {
-    //   console.log("uid :  ", currUser.uid);
-    //   db.collection("users")
-    //     .doc(currUser.uid)
-    //     .get()
-    //     .then((res) => {
-    //       // console.log("res:   ", res.data());
-    //       console.log(
-    //         "now restureuingi addidanstep ",
-    //         res.data().additionalSteps
-    //       );
-    //       return res.data().additionalSteps;
-    //     });
-    //   return true;
-    // } else {
-    //   console.log("failde null omggg...");
-    //   return true;
-    // }
-  };
 
   const readStorage = async () => {
     const userData = await AsyncStorage.getItem("current-user");
@@ -42,17 +18,15 @@ export function useAuth() {
       setAuthState({
         isSignedIn: true,
         user: JSON.parse(userData),
-        additionalSteps: true,
       });
-      console.log("user login state is *found*, now returning true");
+      // console.log("user login state is *found*, now returning true");
       return true;
     } else {
       setAuthState({
         isSignedIn: false,
         user: null,
-        additionalSteps: true,
       });
-      console.log("user login state not found, now returning false");
+      // console.log("user login state not found, now returning false");
       return false;
     }
   };
@@ -80,7 +54,7 @@ export function useAuth() {
       .then((isSignedIn) => {
         if (isSignedIn) {
           // do something...
-          console.log("is signed in hook true");
+          // console.log("is signed in hook true");
           // signOutUser();
         } else {
           const unregisterAuthObserver = firebase
@@ -89,7 +63,6 @@ export function useAuth() {
               setAuthState({
                 user,
                 isSignedIn: !!user,
-                additionalSteps: true,
               });
               writeStorage("credential", user);
               console.log("firebase curenus:  ", firebase.auth().currentUser);
@@ -102,7 +75,7 @@ export function useAuth() {
         console.log(error);
       });
   }, []);
-  return { auth, ...authState, signOutUser, checkForAdditionalSteps };
+  return { auth, ...authState, signOutUser };
 }
 
 export default useAuth;

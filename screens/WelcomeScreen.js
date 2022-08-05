@@ -13,14 +13,14 @@ import {
   StatusBar,
 } from "react-native";
 import React from "react";
-import styles from "../../assets/stylesheet/styles";
+import styles from "../assets/stylesheet/styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import facebookLogin from "../../utils/loginWithFacebook";
-import firebase from "firebase/compat/app";
+import facebookLogin from "../utils/loginWithFacebook";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-var pkg = require("../../package.json");
+var pkg = require("../package.json");
 console.log(pkg.version);
+import useAuth from "../hooks/useAuth";
 
 // const { width, height } = Dimensions.get("window");
 
@@ -31,13 +31,15 @@ const WelcomeScreen = ({ navigation }) => {
 
   StatusBar.setBarStyle("light-content", true);
 
+  const { signOutUser } = useAuth();
+
   return (
     <>
       <StatusBar translucent backgroundColor="transparent" />
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.welcomeScreen.Container}>
           <Image
-            source={require("../../assets/welcome/welcome-banner.jpg")}
+            source={require("../assets/welcome/welcome-banner.jpg")}
             style={styles.welcomeScreen.Banner}
           />
           <View style={styles.welcomeScreen.MainSection}>
@@ -129,9 +131,11 @@ const WelcomeScreen = ({ navigation }) => {
                   </Text>
                 </Pressable>
               </View>
-              <Text style={styles.global.versionText}>
-                {pkg.version + " " + pkg.versionType}
-              </Text>
+              <Pressable onPress={signOutUser}>
+                <Text style={styles.global.versionText}>
+                  {pkg.version + " " + pkg.versionType}
+                </Text>
+              </Pressable>
             </SafeAreaView>
           </View>
         </View>
