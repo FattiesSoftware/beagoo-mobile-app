@@ -43,10 +43,6 @@ const AvatarSelected = ({ navigation, route }) => {
       const filename = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       const downloadURL = await uploadImageToStorage(blob, filename);
       console.log("downloadURL: ", downloadURL);
-      let shouldShowOnFeed = false;
-      if (toggleCheckBox) {
-        shouldShowOnFeed = true;
-      }
       updateAvatarNeeded(null, false);
       console.log("success changed needToUpdateAvatar to false");
       updateAvatarUrl(null, downloadURL);
@@ -58,7 +54,7 @@ const AvatarSelected = ({ navigation, route }) => {
           owner: JSON.parse(await AsyncStorage.getItem("user-more")).uid,
           ownerName: JSON.parse(await AsyncStorage.getItem("user-more"))
             .displayName,
-          shouldShowOnFeed: shouldShowOnFeed,
+          shouldShowOnFeed: toggleCheckBox,
           caption: caption,
           like: 0,
           comment: 0,

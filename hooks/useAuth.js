@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import firebase, { auth } from "firebase/compat/app";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import firebaseConfig from "../firebase";
+import * as RootNavigation from "../utils/RootNavigation";
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -9,7 +10,6 @@ const db = firebase.firestore();
 export function useAuth() {
   const [authState, setAuthState] = useState({
     isSignedIn: false,
-    user: null,
   });
 
   const readStorage = async () => {
@@ -17,14 +17,12 @@ export function useAuth() {
     if (userData != "null" && userData != null) {
       setAuthState({
         isSignedIn: true,
-        user: JSON.parse(userData),
       });
       // console.log("user login state is *found*, now returning true");
       return true;
     } else {
       setAuthState({
         isSignedIn: false,
-        user: null,
       });
       // console.log("user login state not found, now returning false");
       return false;
@@ -47,6 +45,9 @@ export function useAuth() {
     console.log("signing out user");
     await AsyncStorage.clear();
     firebase.auth().signOut();
+    setTimeout(() => {
+      RootNavigation.navigate("Welcome");
+    }, 800);
   };
 
   useEffect(() => {
@@ -61,7 +62,6 @@ export function useAuth() {
             .auth()
             .onAuthStateChanged((user) => {
               setAuthState({
-                user,
                 isSignedIn: !!user,
               });
               writeStorage("credential", user);
@@ -74,6 +74,8 @@ export function useAuth() {
       .catch((error) => {
         console.log(error);
       });
+
+    return () => readStorage();
   }, []);
   return { auth, ...authState, signOutUser };
 }

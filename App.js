@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar, View } from "react-native";
+import { LogBox, StatusBar, View } from "react-native";
 import {
   NavigationContainer,
   useNavigation,
@@ -33,6 +33,10 @@ export default function App() {
 
   const Stack = createNativeStackNavigator();
   const { isSignedIn, user, signOutUser } = useAuth();
+
+  LogBox.ignoreLogs([
+    "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
+  ]);
 
   const check = async () => {
     // console.log(JSON.parse(await AsyncStorage.getItem("current-user")));
@@ -80,16 +84,20 @@ export default function App() {
 
   React.useEffect(() => {
     check();
+    console.log("\n\nFirst Load\t" + new Date() + "\n====================");
+    console.log("isSIGNEDIN: " + isSignedIn);
+    console.log("isAddNeeded: " + isAddNeeded);
+    console.log("is new user: ", isNewUser);
+    console.log("isAvatarUpdateNeeded: " + isAvatarUpdateNeeded);
     setTimeout(() => {
       setIsSplashReady(true);
     }, 1000);
     if (isSignedIn == true) {
-      console.log("\n\nFirst Load\n====================");
       console.log("user is logged in");
-      console.log("isSIGNEDIN: " + isSignedIn);
-      console.log("isAddNeeded: " + isAddNeeded);
-      console.log("is new user: ", isNewUser);
-      console.log("isAvatarUpdateNeeded: " + isAvatarUpdateNeeded);
+      if (isAddNeeded == true) {
+        console.log("additional steps needed");
+        RootNavigation.navigate("OAuthAdditionalSteps");
+      }
       if (isAvatarUpdateNeeded == true && isAddNeeded === false) {
         RootNavigation.dispatch({
           index: 2,
@@ -146,6 +154,27 @@ export default function App() {
     </ModalStack.Navigator>
   );
 
+  const SignIn = () => (
+    <ModalStack.Navigator>
+      <ModalStack.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{
+          presentation: "fullScreenModal",
+          headerShown: false,
+        }}
+      />
+      <ModalStack.Screen
+        name="VerificationCode"
+        component={VerificationCodeScreen}
+        options={{
+          headerShown: false,
+          presentation: "card",
+        }}
+      />
+    </ModalStack.Navigator>
+  );
+
   return (
     <>
       <AnimatedSplash
@@ -159,14 +188,13 @@ export default function App() {
         <NavigationContainer ref={RootNavigation.navigationRef}>
           <TailwindProvider>
             <Stack.Navigator>
-              {isSignedIn ? (
+              {isSignedIn && isAddNeeded == false && isAddNeeded != null ? (
                 <>
                   <Stack.Screen
-                    name="OAuthAdditionalSteps"
-                    component={OAuthAddSteps}
+                    name="Home"
+                    component={HomeScreen}
                     options={{
-                      headerShown: false,
-                      gestureEnabled: false,
+                      animation: "none",
                     }}
                   />
                   <Stack.Screen
@@ -177,45 +205,41 @@ export default function App() {
                       presentation: "fullScreenModal",
                     }}
                   />
-                  {/* <Stack.Screen
-                    name="AddProfilePicture"
-                    component={AddProfilePicture}
-                    options={{
-                      headerShown: false,
-                      presentation: "fullScreenModal",
-                    }}
-                  /> */}
-                  <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={{
-                      animation: "none",
-                    }}
-                  /
                 </>
-              ) : (
+              ) : isSignedIn && isAddNeeded === true ? (
                 <>
-                  <Stack.Screen
-                    name="Welcome"
-                    component={WelcomeScreen}
-                    options={{
-                      presentation: "fullScreenModal",
-                      headerShown: false,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="VerificationCode"
-                    component={VerificationCodeScreen}
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
                   <Stack.Screen
                     name="OAuthAdditionalSteps"
                     component={OAuthAddSteps}
                     options={{
                       headerShown: false,
                       gestureEnabled: false,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{
+                      animation: "none",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ChangeAvatar"
+                    component={ChangeAvatar}
+                    options={{
+                      headerShown: false,
+                      presentation: "fullScreenModal",
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <Stack.Screen
+                    name="SignIn"
+                    component={SignIn}
+                    options={{
+                      headerShown: false,
+                      presentation: "fullScreenModal",
                     }}
                   />
                 </>

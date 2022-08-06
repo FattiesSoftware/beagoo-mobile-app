@@ -1,7 +1,9 @@
 import React from "react";
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView, StatusBar, Text } from "react-native";
 
 const HomeScreen = () => {
+  StatusBar.setBarStyle("dark-content", true);
+
   return (
     <>
       <SafeAreaView>

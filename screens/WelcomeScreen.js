@@ -85,6 +85,9 @@ const WelcomeScreen = ({ navigation }) => {
               <TouchableOpacity
                 disabled={nextButtonDisabled}
                 onPress={() => {
+                  console.log("next button pressed");
+                  // navigation.popToTop();
+                  // navigation.goBack(null);
                   navigation.navigate("VerificationCode", {
                     phoneNumber: phoneNumber,
                   });

@@ -22,6 +22,7 @@ import DatePicker from "react-native-date-picker";
 import moment from "moment";
 import firebase from "firebase/compat/app";
 import firebaseConfig from "../firebase";
+import * as RootNavigation from "../utils/RootNavigation";
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -38,6 +39,7 @@ const OAuthAddSteps = ({ navigation }) => {
   StatusBar.setBarStyle("dark-content", true);
 
   const { signOutUser } = useAuth();
+  const nameInputRef = React.useRef();
 
   const getName = async () => {
     if (name == "") {
@@ -63,7 +65,10 @@ const OAuthAddSteps = ({ navigation }) => {
       .then((res) => console.log(res))
       .finally(() => {
         // setLoading(false);
-        navigation.navigate("AddProfilePicture");
+        RootNavigation.dispatch({
+          index: 2,
+          routes: [{ name: "Home" }, { name: "ChangeAvatar" }],
+        });
       })
       .catch((err) => console.log(err));
   };
@@ -125,6 +130,7 @@ const OAuthAddSteps = ({ navigation }) => {
                       fontWeight: "600",
                       color: "#333333",
                     }}
+                    ref={nameInputRef}
                     value={name}
                     placeholderTextColor={"#A9A9A9"}
                     onChangeText={(text) => setName(text)}
@@ -155,7 +161,12 @@ const OAuthAddSteps = ({ navigation }) => {
                   />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Pressable onPress={() => setOpen(true)}>
+                  <Pressable
+                    onPress={() => {
+                      setOpen(true);
+                      nameInputRef.current?.blur();
+                    }}
+                  >
                     <TextInput
                       placeholder="Chọn ngày sinh"
                       style={{
@@ -178,11 +189,13 @@ const OAuthAddSteps = ({ navigation }) => {
                     maximumDate={new Date()}
                     minimumDate={new Date("1900-01-01")}
                     onConfirm={(date) => {
+                      Keyboard.dismiss();
                       setOpen(false);
                       setDate(date);
                       setDateValue(moment(date).format("DD/MM/YYYY"));
                     }}
                     onCancel={() => {
+                      Keyboard.dismiss();
                       setOpen(false);
                     }}
                     mode="date"
