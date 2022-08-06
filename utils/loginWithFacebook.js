@@ -2,7 +2,7 @@ import * as Facebook from "expo-facebook";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-import firebaseConfig from "../firebase";
+import { firebaseConfig } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 firebase.initializeApp(firebaseConfig);
@@ -35,6 +35,7 @@ const facebookLogin = async (setFbButtonDisabled) => {
           console.log("credential info:   ", credential);
           if (res.additionalUserInfo.isNewUser) {
             setItem(true);
+            console.log("new user creating..........", res.user.uid);
             db.collection("users")
               .doc(res.user.uid)
               .set({
@@ -46,19 +47,22 @@ const facebookLogin = async (setFbButtonDisabled) => {
                 needToUpdateAvatar: true,
               })
               .then(() => {
-                db.collection("posts").add({
-                  type: "avatar",
-                  image: res.user.photoURL,
-                  owner: res.user.uid,
-                  ownerName: res.user.displayName,
-                  shouldShowOnFeed: true,
-                  caption: "",
-                  like: 0,
-                  comment: 0,
-                  share: 0,
-                  createdAt: new Date(),
-                });
-              });
+                db.collection("posts")
+                  .add({
+                    type: "avatar",
+                    image: res.user.photoURL,
+                    owner: res.user.uid,
+                    ownerName: res.user.displayName,
+                    shouldShowOnFeed: true,
+                    caption: "",
+                    like: 0,
+                    comment: 0,
+                    share: 0,
+                    createdAt: new Date(),
+                  })
+                  .catch((err) => console.error(err));
+              })
+              .catch((err) => console.error(err));
           } else {
             console.log("user already exists");
             setItem(false);

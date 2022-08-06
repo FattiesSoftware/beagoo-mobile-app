@@ -1,5 +1,5 @@
 import firebase from "firebase/compat/app";
-import firebaseConfig from "../firebase";
+import { firebaseConfig } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 firebase.initializeApp(firebaseConfig);

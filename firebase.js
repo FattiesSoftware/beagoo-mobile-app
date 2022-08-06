@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { initializeFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -15,7 +16,12 @@ const firebaseConfig = {
   measurementId: "G-YKBMNHXEZP",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export default firebaseConfig;
+// create a const db with the firestore instance with long polling option enabled
+const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+});
+
+// Initialize Firebase
+export { firebaseConfig, db };

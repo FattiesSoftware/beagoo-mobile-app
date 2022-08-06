@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import firebase, { auth } from "firebase/compat/app";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import firebaseConfig from "../firebase";
+import { firebaseConfig } from "../firebase";
 import * as RootNavigation from "../utils/RootNavigation";
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
 
 export function useAuth() {
   const [authState, setAuthState] = useState({

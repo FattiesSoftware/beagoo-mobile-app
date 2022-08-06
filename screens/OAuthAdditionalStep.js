@@ -21,7 +21,7 @@ import useAuth from "../hooks/useAuth";
 import DatePicker from "react-native-date-picker";
 import moment from "moment";
 import firebase from "firebase/compat/app";
-import firebaseConfig from "../firebase";
+import { firebaseConfig } from "../firebase";
 import * as RootNavigation from "../utils/RootNavigation";
 
 firebase.initializeApp(firebaseConfig);

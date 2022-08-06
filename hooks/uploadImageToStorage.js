@@ -1,6 +1,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/storage";
-import firebaseConfig from "../firebase";
+import { firebaseConfig } from "../firebase";
 
 firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();

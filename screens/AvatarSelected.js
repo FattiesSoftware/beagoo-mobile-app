@@ -17,7 +17,7 @@ import DefaultHeader from "../components/DefaultHeader";
 import uploadImageToStorage from "../hooks/uploadImageToStorage";
 import RNProgressHud from "progress-hud";
 import firebase from "firebase/compat/app";
-import firebaseConfig from "../firebase";
+import { firebaseConfig } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { updateAvatarNeeded, updateAvatarUrl } from "../utils/updateUser";
 
@@ -32,7 +32,6 @@ const AvatarSelected = ({ navigation, route }) => {
   StatusBar.setBarStyle("dark-content", true);
 
   const uploadImage = async () => {
-    console.log("uriiii:  ", imageUri);
     console.log(
       "uoidddd: ",
       JSON.parse(await AsyncStorage.getItem("user-more")).uid
@@ -42,6 +41,9 @@ const AvatarSelected = ({ navigation, route }) => {
       const blob = await response.blob();
       const filename = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       const downloadURL = await uploadImageToStorage(blob, filename);
+      console.log("uriiii22222:  ", imageUri);
+      console.log("caption: ", caption);
+      console.log("toggleCheckBox: ", toggleCheckBox);
       console.log("downloadURL: ", downloadURL);
       updateAvatarNeeded(null, false);
       console.log("success changed needToUpdateAvatar to false");
@@ -90,12 +92,14 @@ const AvatarSelected = ({ navigation, route }) => {
         );
       },
     });
-  }, [route.params?.image]);
+  }, [route.params.image, imageUri, caption, toggleCheckBox]);
 
   React.useEffect(() => {
     console.log("r9uaeopdiasd spic;sd: ", route.params?.image);
+    console.log("caption2: ", caption);
+    console.log("toggleCheckBox2: ", toggleCheckBox);
     setImageUri(route.params?.image);
-  }, [route.params?.image, imageUri]);
+  }, [route.params.image, imageUri, caption, toggleCheckBox]);
 
   return (
     <>
@@ -117,6 +121,7 @@ const AvatarSelected = ({ navigation, route }) => {
                 value={caption}
                 onChangeText={(text) => {
                   setCaption(text);
+                  console.log(caption);
                 }}
               />
             </View>

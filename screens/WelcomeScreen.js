@@ -29,7 +29,7 @@ const WelcomeScreen = ({ navigation }) => {
   const [nextButtonDisabled, setNextButtonDisabled] = React.useState(true);
   const [fbButtonDisabled, setFbButtonDisabled] = React.useState(false);
 
-  StatusBar.setBarStyle("light-content", true);
+  StatusBar.setBarStyle("dark-content", true);
 
   const { signOutUser } = useAuth();
 

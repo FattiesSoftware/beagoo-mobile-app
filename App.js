@@ -14,13 +14,13 @@ import * as RootNavigation from "./utils/RootNavigation";
 import { useAuth } from "./hooks/useAuth";
 import HomeScreen from "./screens/Home";
 import firebase from "firebase/compat/app";
-import firebaseConfig from "./firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AddProfilePicture from "./screens/AddProfilePicture";
 import { TailwindProvider } from "tailwindcss-react-native";
 import AvatarSelected from "./screens/AvatarSelected";
 import { CropAvatar, cropViewRef } from "./screens/CropAvatar";
 import DefaultHeader from "./components/DefaultHeader";
+import { firebaseConfig } from "./firebase";
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -33,6 +33,8 @@ export default function App() {
 
   const Stack = createNativeStackNavigator();
   const { isSignedIn, signOutUser } = useAuth();
+
+  StatusBar.setBarStyle("dark-content", true);
 
   LogBox.ignoreLogs([
     "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
@@ -54,7 +56,7 @@ export default function App() {
           })
           .catch((err) => {
             setIsAddNeeded(true);
-            setIsAvatarUpdateNeeded(false);
+            setIsAvatarUpdateNeeded(true);
             console.log(err);
           });
       } catch (error) {
@@ -112,7 +114,7 @@ export default function App() {
     } else {
       console.log("user is not logged in");
     }
-  }, [isSignedIn, isAddNeeded, isAvatarUpdateNeeded, isNewUser]);
+  }, [isSignedIn, isAddNeeded, isAvatarUpdateNeeded]);
 
   const ModalStack = createNativeStackNavigator();
 
