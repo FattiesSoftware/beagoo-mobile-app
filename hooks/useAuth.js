@@ -24,7 +24,7 @@ export function useAuth() {
       setAuthState({
         isSignedIn: false,
       });
-      // console.log("user login state not found, now returning false");
+      console.log("user login state not found, now returning false");
       return false;
     }
   };

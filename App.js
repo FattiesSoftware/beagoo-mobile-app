@@ -32,7 +32,7 @@ export default function App() {
   const [isNewUser, setIsNewUser] = React.useState(null);
 
   const Stack = createNativeStackNavigator();
-  const { isSignedIn, user, signOutUser } = useAuth();
+  const { isSignedIn, signOutUser } = useAuth();
 
   LogBox.ignoreLogs([
     "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
@@ -109,6 +109,8 @@ export default function App() {
           routes: [{ name: "Home" }],
         });
       }
+    } else {
+      console.log("user is not logged in");
     }
   }, [isSignedIn, isAddNeeded, isAvatarUpdateNeeded, isNewUser]);
 
@@ -188,7 +190,9 @@ export default function App() {
         <NavigationContainer ref={RootNavigation.navigationRef}>
           <TailwindProvider>
             <Stack.Navigator>
-              {isSignedIn && isAddNeeded == false && isAddNeeded != null ? (
+              {isSignedIn == true &&
+              isAddNeeded == false &&
+              isAddNeeded != null ? (
                 <>
                   <Stack.Screen
                     name="Home"
@@ -206,7 +210,7 @@ export default function App() {
                     }}
                   />
                 </>
-              ) : isSignedIn && isAddNeeded === true ? (
+              ) : isSignedIn == true && isAddNeeded === true ? (
                 <>
                   <Stack.Screen
                     name="OAuthAdditionalSteps"
@@ -216,6 +220,24 @@ export default function App() {
                       gestureEnabled: false,
                     }}
                   />
+                  <Stack.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{
+                      animation: "none",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ChangeAvatar"
+                    component={ChangeAvatar}
+                    options={{
+                      headerShown: false,
+                      presentation: "fullScreenModal",
+                    }}
+                  />
+                </>
+              ) : isSignedIn == true ? (
+                <>
                   <Stack.Screen
                     name="Home"
                     component={HomeScreen}
