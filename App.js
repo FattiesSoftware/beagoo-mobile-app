@@ -1,5 +1,5 @@
 import React from "react";
-import { LogBox, StatusBar, Pressable, View } from "react-native";
+import { LogBox, StatusBar, Pressable, Animated, Easing } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -23,6 +23,7 @@ import { BlurView } from "expo-blur";
 import MainHeader from "./components/MainHeader";
 import SideMenu from "@chakrahq/react-native-side-menu";
 import MainSideMenu from "./components/MainSideMenu";
+import createAnimation from "./utils/createAnimation";
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -50,6 +51,8 @@ export default function App() {
   LogBox.ignoreLogs([
     "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
   ]);
+
+  const animatedValue1 = new Animated.Value(1);
 
   const check = async () => {
     if (
@@ -200,6 +203,9 @@ export default function App() {
         menuPosition="right"
         isOpen={setting}
         onChange={(isOpen) => setSetting(isOpen)}
+        onSliding={(value) => {
+          animatedValue1.setValue(1 - value);
+        }}
         openMenuOffset={300}
       >
         <Tab.Navigator
@@ -270,6 +276,7 @@ export default function App() {
                     title={"Khám phá"}
                     haveBottomBorder={false}
                     setSetting={setSetting}
+                    animatedValue={animatedValue1}
                   />
                 );
               },

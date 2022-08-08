@@ -6,6 +6,8 @@ import {
   Platform,
   Image,
   Pressable,
+  Animated,
+  Easing,
 } from "react-native";
 import React from "react";
 import UserAvatar from "./UserAvatar";
@@ -21,6 +23,7 @@ const MainHeader = ({
   haveBackButton = true,
   haveBottomBorder = true,
   setSetting,
+  animatedValue,
 }) => {
   const [uid, setUid] = React.useState("");
 
@@ -46,7 +49,12 @@ const MainHeader = ({
           <View className="flex-row items-center">
             <Text className="font-extrabold text-3xl">{title}</Text>
           </View>
-          <View className="flex-row items-center">
+          <Animated.View
+            className="flex-row items-center"
+            style={{
+              opacity: animatedValue,
+            }}
+          >
             <TouchableOpacity>
               <View className="mr-4">
                 <Ionicons name="search" size={25} />
@@ -55,7 +63,7 @@ const MainHeader = ({
             <TouchableOpacity onPress={() => setSetting((setting) => !setting)}>
               <UserAvatar userId={uid} size={30} />
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         </View>
       </SafeAreaView>
     </BlurView>
