@@ -1,11 +1,8 @@
 import React from "react";
-import { LogBox, StatusBar, View } from "react-native";
-import {
-  NavigationContainer,
-  useNavigation,
-  CommonActions,
-} from "@react-navigation/native";
+import { LogBox, StatusBar, Pressable } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import VerificationCodeScreen from "./screens/VerificationCodeScreen";
 import AnimatedSplash from "react-native-animated-splash-screen";
@@ -21,6 +18,8 @@ import AvatarSelected from "./screens/AvatarSelected";
 import { CropAvatar, cropViewRef } from "./screens/CropAvatar";
 import DefaultHeader from "./components/DefaultHeader";
 import { firebaseConfig } from "./firebase";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { BlurView } from "expo-blur";
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -103,12 +102,12 @@ export default function App() {
       if (isAvatarUpdateNeeded == true && isAddNeeded === false) {
         RootNavigation.dispatch({
           index: 2,
-          routes: [{ name: "Home" }, { name: "ChangeAvatar" }],
+          routes: [{ name: "Main" }, { name: "ChangeAvatar" }],
         });
       } else if (isAvatarUpdateNeeded === false && isAddNeeded === false) {
         RootNavigation.dispatch({
           index: 1,
-          routes: [{ name: "Home" }],
+          routes: [{ name: "Main" }],
         });
       }
     } else {
@@ -179,8 +178,98 @@ export default function App() {
     </ModalStack.Navigator>
   );
 
+  const MainScreen = ({ navigation }) => {
+    const [currentScreen, setCurrentScreen] = React.useState("HomeScreen");
+    const Tab = createBottomTabNavigator();
+    return (
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === "Home") {
+              iconName = focused ? "home" : "home-outline";
+            } else if (route.name === "Newsfeed") {
+              iconName = focused ? "newspaper" : "newspaper-outline";
+            } else if (route.name === "Chat") {
+              iconName = focused ? "chatbubble" : "chatbubble-outline";
+            } else if (route.name === "Notifications") {
+              iconName = focused ? "notifications" : "notifications-outline";
+            } else if (route.name === "Menu") {
+              iconName = focused ? "menu" : "menu-outline";
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarButton: (props) => (
+            <Pressable
+              {...props}
+              onPress={(e) => {
+                if (route.params.currentScreen == currentScreen) {
+                  return;
+                } else {
+                  // console.log(currentScreen);
+                  navigation.navigate(route.name, {
+                    previous_screen: currentScreen,
+                  });
+                  setCurrentScreen(route.params.currentScreen);
+                }
+                // console.log(route.params.currentScreen);
+              }}
+            />
+          ),
+          tabBarStyle: {
+            borderTopColor: "#B3B3B3",
+            // backgroundColor: "transparent",
+            // position: "absolute",
+            position: "absolute",
+          },
+          tabBarLabelStyle: {
+            fontWeight: "500",
+          },
+          tabBarBackground: () => (
+            <BlurView tint="light" intensity={1000} style={{ flex: 1 }} />
+          ),
+        })}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          initialParams={{
+            currentScreen: "HomeScreen",
+          }}
+          options={{
+            title: "Trang chủ",
+            // tab screen fade transition
+            headerShown: true,
+            headerBackButtonMenuEnabled: false,
+            header: () => {
+              return (
+                <DefaultHeader
+                  title="Xem trước ảnh đại diện"
+                  rightActionTitle={"Lưu"}
+                  onPressGoBack={navigation.goBack}
+                  onPressRightAction={() => {
+                    //   console.log(imageUri);
+                    RNProgressHud.showWithStatus("Đang tải lên...");
+                    uploadImage();
+                  }}
+                />
+              );
+            },
+          }}
+        />
+      </Tab.Navigator>
+    );
+  };
+
   return (
     <>
+      {/* <FirebaseRecaptchaVerifierModal
+        ref={recaptchaVerifier}
+        firebaseConfig={firebase.app().options}
+      /> */}
       <AnimatedSplash
         translucent={true}
         isLoaded={isSplashReady}
@@ -191,17 +280,19 @@ export default function App() {
       >
         <NavigationContainer ref={RootNavigation.navigationRef}>
           <TailwindProvider>
+            <StatusBar translucent backgroundColor="transparent" />
             <Stack.Navigator>
-              {isSignedIn == true &&
-              isAddNeeded == false &&
-              isAddNeeded != null ? (
+              {isSignedIn == true ? (
                 <>
                   <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}
                     options={{
+                      title: "Trang chính",
+                      headerShown: false,
+                      gestureEnabled: false,
                       animation: "none",
                     }}
+                    name="Main"
+                    component={MainScreen}
                   />
                   <Stack.Screen
                     name="ChangeAvatar"
@@ -211,48 +302,12 @@ export default function App() {
                       presentation: "fullScreenModal",
                     }}
                   />
-                </>
-              ) : isSignedIn == true && isAddNeeded === true ? (
-                <>
                   <Stack.Screen
                     name="OAuthAdditionalSteps"
                     component={OAuthAddSteps}
                     options={{
                       headerShown: false,
                       gestureEnabled: false,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={{
-                      animation: "none",
-                    }}
-                  />
-                  <Stack.Screen
-                    name="ChangeAvatar"
-                    component={ChangeAvatar}
-                    options={{
-                      headerShown: false,
-                      presentation: "fullScreenModal",
-                    }}
-                  />
-                </>
-              ) : isSignedIn == true ? (
-                <>
-                  <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={{
-                      animation: "none",
-                    }}
-                  />
-                  <Stack.Screen
-                    name="ChangeAvatar"
-                    component={ChangeAvatar}
-                    options={{
-                      headerShown: false,
-                      presentation: "fullScreenModal",
                     }}
                   />
                 </>

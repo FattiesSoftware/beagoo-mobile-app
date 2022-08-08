@@ -17,7 +17,7 @@ export function useAuth() {
       setAuthState({
         isSignedIn: true,
       });
-      // console.log("user login state is *found*, now returning true");
+      console.log("user login state is *found*, now returning true");
       return true;
     } else {
       setAuthState({
@@ -45,8 +45,8 @@ export function useAuth() {
     await AsyncStorage.clear();
     firebase.auth().signOut();
     setTimeout(() => {
-      RootNavigation.navigate("Welcome");
-    }, 800);
+      RootNavigation.navigate("SignIn");
+    }, 1000);
   };
 
   useEffect(() => {

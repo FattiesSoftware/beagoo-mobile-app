@@ -11,6 +11,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { launchImageLibrary } from "react-native-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import { updateAvatarNeeded } from "../utils/updateUser";
+import DefaultHeader from "../components/DefaultHeader";
 
 const AddProfilePicture = () => {
   const navigation = useNavigation();
@@ -34,17 +35,27 @@ const AddProfilePicture = () => {
     navigation.goBack();
   };
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      header: () => {
+        return (
+          <DefaultHeader
+            title="Hoàn thiện thông tin"
+            rightActionTitle={"Thoát"}
+            onPressGoBack={handleExit}
+            onPressRightAction={handleExit}
+            haveBackButton={false}
+            haveBottomBorder={false}
+          />
+        );
+      },
+    });
+  }, []);
+
   return (
     <View className="bg-white flex-1">
       <SafeAreaView className="mt-7 flex-1">
-        <View className="flex-row">
-          <Text className="text-center font-[600] text-[15px] flex-1">
-            Hoàn thiện thông tin
-          </Text>
-          <TouchableOpacity onPress={handleExit}>
-            <Text className="absolute right-4">Thoát</Text>
-          </TouchableOpacity>
-        </View>
         <View className="my-14 items-center flex-1">
           <Pressable onPress={handlePress}>
             <View className="rounded-full bg-gray-200 w-32 h-32 border-solid border-white border-2 shadow-sm items-center justify-center">

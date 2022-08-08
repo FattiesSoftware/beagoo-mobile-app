@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 0.55.1"
+    "version": ">= 0.52.0"
   },
   "build": {
     "development": {
@@ -10,6 +10,9 @@
       },
       "ios": {
         "buildConfiguration": "Debug"
+      },
+      "configuration_only": {
+        "node": "16.16.0"
       }
     },
     "preview": {

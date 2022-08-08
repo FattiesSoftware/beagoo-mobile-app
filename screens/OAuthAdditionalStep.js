@@ -67,7 +67,7 @@ const OAuthAddSteps = ({ navigation }) => {
         // setLoading(false);
         RootNavigation.dispatch({
           index: 2,
-          routes: [{ name: "Home" }, { name: "ChangeAvatar" }],
+          routes: [{ name: "Main" }, { name: "ChangeAvatar" }],
         });
       })
       .catch((err) => console.log(err));
@@ -232,7 +232,7 @@ const OAuthAddSteps = ({ navigation }) => {
                       {
                         width: 140,
                         height: 160,
-                        borderWidth: 0.2,
+                        borderWidth: 0.8,
                         borderColor: "gray",
                         borderRadius: 10,
                       },
@@ -255,8 +255,8 @@ const OAuthAddSteps = ({ navigation }) => {
                         style={[
                           { width: 70, height: 88 },
                           gender == "male"
-                            ? { marginTop: 0 }
-                            : { marginTop: 2 },
+                            ? { marginTop: 1.5 }
+                            : { marginTop: 3 },
                         ]}
                       />
                     </View>
@@ -264,8 +264,8 @@ const OAuthAddSteps = ({ navigation }) => {
                       style={[
                         { textAlign: "center" },
                         gender == "male"
-                          ? { marginBottom: 13 }
-                          : { marginBottom: 15 },
+                          ? { marginBottom: 14.7 }
+                          : { marginBottom: 16 },
                       ]}
                     >
                       Nam
@@ -286,7 +286,7 @@ const OAuthAddSteps = ({ navigation }) => {
                       {
                         width: 140,
                         height: 160,
-                        borderWidth: 0.2,
+                        borderWidth: 0.8,
                         borderColor: "gray",
                         borderRadius: 10,
                       },
@@ -308,8 +308,8 @@ const OAuthAddSteps = ({ navigation }) => {
                         style={[
                           { width: 56, height: 88 },
                           gender == "female"
-                            ? { marginTop: 0 }
-                            : { marginTop: 2 },
+                            ? { marginTop: 1.5 }
+                            : { marginTop: 3 },
                         ]}
                       />
                     </View>
@@ -317,8 +317,8 @@ const OAuthAddSteps = ({ navigation }) => {
                       style={[
                         { textAlign: "center" },
                         gender == "female"
-                          ? { marginBottom: 13 }
-                          : { marginBottom: 15 },
+                          ? { marginBottom: 14.7 }
+                          : { marginBottom: 16 },
                       ]}
                     >
                       Nữ

@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  StatusBar,
-  TouchableOpacity,
-} from "react-native";
+import { StatusBar, Platform } from "react-native";
 import React from "react";
 import { useRoute } from "@react-navigation/native";
 import { CropView } from "react-native-image-crop-tools";
@@ -32,7 +25,7 @@ const CropAvatar = ({ navigation }) => {
           navigation.navigate({
             name: "AvatarSelected",
             params: {
-              image: res.uri,
+              image: Platform.OS == "android" ? "file://" + res.uri : res.uri,
             },
             merge: true,
           });

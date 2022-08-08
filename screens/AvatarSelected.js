@@ -143,9 +143,7 @@ const AvatarSelected = ({ navigation, route }) => {
                   source={{ uri: imageUri }}
                   className="w-full h-full rounded-full"
                 />
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("AddProfilePicture")}
-                >
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                   <View className="absolute right-5 bottom-5 bg-gray-200 w-11 h-11 rounded-full items-center justify-center border-4 border-white">
                     <Ionicons name="camera" size={25} color="black" />
                   </View>

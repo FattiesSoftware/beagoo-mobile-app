@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Pressable,
   StatusBar,
+  Alert,
 } from "react-native";
 import React from "react";
 import styles from "../assets/stylesheet/styles";
@@ -31,7 +32,28 @@ const WelcomeScreen = ({ navigation }) => {
 
   StatusBar.setBarStyle("dark-content", true);
 
-  const { signOutUser } = useAuth();
+  const checkIfPhoneIsValidType = () => {
+    var regex = /^\d+$/;
+    // firstly, check if the phone number is valid via regex
+    if (!regex.test(phoneNumber)) return false;
+    if (phoneNumber.length >= 9 && phoneNumber.length <= 11) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const handleNextButton = () => {
+    console.log("next button pressed");
+    var phone = (phoneNumber * 1).toString();
+    if (checkIfPhoneIsValidType()) {
+      navigation.navigate("VerificationCode", {
+        phoneNumber: "+84" + phone,
+      });
+    } else {
+      Alert.alert("Vui lòng điền số điện thoại hợp lệ!");
+    }
+  };
 
   return (
     <>
@@ -84,14 +106,7 @@ const WelcomeScreen = ({ navigation }) => {
             >
               <TouchableOpacity
                 disabled={nextButtonDisabled}
-                onPress={() => {
-                  console.log("next button pressed");
-                  // navigation.popToTop();
-                  // navigation.goBack(null);
-                  navigation.navigate("VerificationCode", {
-                    phoneNumber: phoneNumber,
-                  });
-                }}
+                onPress={handleNextButton}
               >
                 <Text style={styles.global.largeButtonText}>Tiếp tục</Text>
               </TouchableOpacity>
@@ -134,11 +149,9 @@ const WelcomeScreen = ({ navigation }) => {
                   </Text>
                 </Pressable>
               </View>
-              <Pressable onPress={signOutUser}>
-                <Text style={styles.global.versionText}>
-                  {pkg.version + " " + pkg.versionType}
-                </Text>
-              </Pressable>
+              <Text style={styles.global.versionText}>
+                {pkg.version + " " + pkg.versionType}
+              </Text>
             </SafeAreaView>
           </View>
         </View>
