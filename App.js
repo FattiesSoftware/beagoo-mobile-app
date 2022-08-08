@@ -1,6 +1,6 @@
 import React from "react";
-import { LogBox, StatusBar, Pressable } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { LogBox, StatusBar, Pressable, View } from "react-native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import WelcomeScreen from "./screens/WelcomeScreen";
@@ -20,9 +20,21 @@ import DefaultHeader from "./components/DefaultHeader";
 import { firebaseConfig } from "./firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { BlurView } from "expo-blur";
+import MainHeader from "./components/MainHeader";
+import SideMenu from "@chakrahq/react-native-side-menu";
+import MainSideMenu from "./components/MainSideMenu";
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#10A7FF",
+    background: "white",
+  },
+};
 
 export default function App() {
   const [isSplashReady, setIsSplashReady] = React.useState(false);
@@ -40,7 +52,6 @@ export default function App() {
   ]);
 
   const check = async () => {
-    // console.log(JSON.parse(await AsyncStorage.getItem("current-user")));
     if (
       (await AsyncStorage.getItem("user-more")) != null &&
       (await AsyncStorage.getItem("user-more")) != "null"
@@ -64,7 +75,6 @@ export default function App() {
       }
     } else {
       console.log("no user-more");
-      // setIsAddNeeded(true);
     }
   };
 
@@ -180,96 +190,97 @@ export default function App() {
 
   const MainScreen = ({ navigation }) => {
     const [currentScreen, setCurrentScreen] = React.useState("HomeScreen");
+    const [setting, setSetting] = React.useState(false);
     const Tab = createBottomTabNavigator();
+    const menu = <MainSideMenu />;
+
     return (
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === "Home") {
-              iconName = focused ? "home" : "home-outline";
-            } else if (route.name === "Newsfeed") {
-              iconName = focused ? "newspaper" : "newspaper-outline";
-            } else if (route.name === "Chat") {
-              iconName = focused ? "chatbubble" : "chatbubble-outline";
-            } else if (route.name === "Notifications") {
-              iconName = focused ? "notifications" : "notifications-outline";
-            } else if (route.name === "Menu") {
-              iconName = focused ? "menu" : "menu-outline";
-            }
-
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarButton: (props) => (
-            <Pressable
-              {...props}
-              onPress={(e) => {
-                if (route.params.currentScreen == currentScreen) {
-                  return;
-                } else {
-                  // console.log(currentScreen);
-                  navigation.navigate(route.name, {
-                    previous_screen: currentScreen,
-                  });
-                  setCurrentScreen(route.params.currentScreen);
-                }
-                // console.log(route.params.currentScreen);
-              }}
-            />
-          ),
-          tabBarStyle: {
-            borderTopColor: "#B3B3B3",
-            // backgroundColor: "transparent",
-            // position: "absolute",
-            position: "absolute",
-          },
-          tabBarLabelStyle: {
-            fontWeight: "500",
-          },
-          tabBarBackground: () => (
-            <BlurView tint="light" intensity={1000} style={{ flex: 1 }} />
-          ),
-        })}
+      <SideMenu
+        menu={menu}
+        menuPosition="right"
+        isOpen={setting}
+        onChange={(isOpen) => setSetting(isOpen)}
       >
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          initialParams={{
-            currentScreen: "HomeScreen",
-          }}
-          options={{
-            title: "Trang chủ",
-            // tab screen fade transition
-            headerShown: true,
-            headerBackButtonMenuEnabled: false,
-            header: () => {
-              return (
-                <DefaultHeader
-                  title="Xem trước ảnh đại diện"
-                  rightActionTitle={"Lưu"}
-                  onPressGoBack={navigation.goBack}
-                  onPressRightAction={() => {
-                    //   console.log(imageUri);
-                    RNProgressHud.showWithStatus("Đang tải lên...");
-                    uploadImage();
-                  }}
-                />
-              );
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+
+              if (route.name === "Home") {
+                iconName = focused ? "home" : "home-outline";
+              } else if (route.name === "Newsfeed") {
+                iconName = focused ? "newspaper" : "newspaper-outline";
+              } else if (route.name === "Chat") {
+                iconName = focused ? "chatbubble" : "chatbubble-outline";
+              } else if (route.name === "Notifications") {
+                iconName = focused ? "notifications" : "notifications-outline";
+              } else if (route.name === "Menu") {
+                iconName = focused ? "menu" : "menu-outline";
+              }
+
+              // You can return any component that you like here!
+              return <Ionicons name={iconName} size={size} color={color} />;
             },
-          }}
-        />
-      </Tab.Navigator>
+            tabBarButton: (props) => (
+              <Pressable
+                {...props}
+                onPress={(e) => {
+                  if (route.params.currentScreen == currentScreen) {
+                    return;
+                  } else {
+                    // console.log(currentScreen);
+                    navigation.navigate(route.name, {
+                      previous_screen: currentScreen,
+                    });
+                    setCurrentScreen(route.params.currentScreen);
+                  }
+                  // console.log(route.params.currentScreen);
+                }}
+              />
+            ),
+            tabBarStyle: {
+              borderTopColor: "#B3B3B3",
+              // backgroundColor: "transparent",
+              // position: "absolute",
+              position: "absolute",
+            },
+            tabBarLabelStyle: {
+              fontWeight: "500",
+            },
+            tabBarBackground: () => (
+              <BlurView tint="light" intensity={1000} style={{ flex: 1 }} />
+            ),
+          })}
+        >
+          <Tab.Screen
+            name="Home"
+            component={HomeScreen}
+            initialParams={{
+              currentScreen: "HomeScreen",
+            }}
+            options={{
+              title: "Trang chủ",
+              headerShown: true,
+              headerBackButtonMenuEnabled: false,
+              headerTransparent: true,
+              header: () => {
+                return (
+                  <MainHeader
+                    title={"Khám phá"}
+                    haveBottomBorder={false}
+                    setSetting={setSetting}
+                  />
+                );
+              },
+            }}
+          />
+        </Tab.Navigator>
+      </SideMenu>
     );
   };
 
   return (
     <>
-      {/* <FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        firebaseConfig={firebase.app().options}
-      /> */}
       <AnimatedSplash
         translucent={true}
         isLoaded={isSplashReady}
@@ -278,10 +289,14 @@ export default function App() {
         logoHeight={150}
         logoWidth={150}
       >
-        <NavigationContainer ref={RootNavigation.navigationRef}>
+        <NavigationContainer ref={RootNavigation.navigationRef} theme={MyTheme}>
           <TailwindProvider>
             <StatusBar translucent backgroundColor="transparent" />
-            <Stack.Navigator>
+            <Stack.Navigator
+              screenOptions={{
+                cardStyle: { backgroundColor: "#fff" },
+              }}
+            >
               {isSignedIn == true ? (
                 <>
                   <Stack.Screen

@@ -44,6 +44,9 @@ export function useAuth() {
     console.log("signing out user");
     await AsyncStorage.clear();
     firebase.auth().signOut();
+    setAuthState({
+      isSignedIn: false,
+    });
     setTimeout(() => {
       RootNavigation.navigate("SignIn");
     }, 1000);

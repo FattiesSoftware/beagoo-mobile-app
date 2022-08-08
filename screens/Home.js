@@ -1,5 +1,13 @@
 import React from "react";
-import { SafeAreaView, StatusBar, Text, TouchableOpacity } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+} from "react-native";
 import useAuth from "../hooks/useAuth";
 
 const HomeScreen = () => {
@@ -8,8 +16,8 @@ const HomeScreen = () => {
   const { signOutUser } = useAuth();
 
   return (
-    <>
-      <SafeAreaView>
+    <SafeAreaView className="bg-white flex-1">
+      <ScrollView className="bg-white flex-1 mx-4 pt-20">
         <Text>Test Screen</Text>
         <TouchableOpacity
           onPress={signOutUser}
@@ -17,8 +25,9 @@ const HomeScreen = () => {
         >
           <Text className="text-white">Sign Out</Text>
         </TouchableOpacity>
-      </SafeAreaView>
-    </>
+        <Image source={require("../assets/welcome/welcome-banner.jpg")} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
