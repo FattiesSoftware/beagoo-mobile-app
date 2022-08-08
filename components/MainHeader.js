@@ -53,7 +53,7 @@ const MainHeader = ({
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setSetting((setting) => !setting)}>
-              <UserAvatar userId={uid} size={40} />
+              <UserAvatar userId={uid} size={30} />
             </TouchableOpacity>
           </View>
         </View>

@@ -7,17 +7,34 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  RefreshControl,
 } from "react-native";
 import useAuth from "../hooks/useAuth";
 
 const HomeScreen = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+
   StatusBar.setBarStyle("dark-content", true);
 
   const { signOutUser } = useAuth();
 
   return (
     <SafeAreaView className="bg-white flex-1">
-      <ScrollView className="bg-white flex-1 mx-4 pt-20">
+      <ScrollView
+        className="bg-white flex-1 mx-4 pt-20 mt-[-10px]"
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              setTimeout(() => {
+                setRefreshing(false);
+              }, 800);
+            }}
+            progressViewOffset={70}
+          />
+        }
+      >
         <Text>Test Screen</Text>
         <TouchableOpacity
           onPress={signOutUser}

@@ -200,6 +200,7 @@ export default function App() {
         menuPosition="right"
         isOpen={setting}
         onChange={(isOpen) => setSetting(isOpen)}
+        openMenuOffset={300}
       >
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -207,7 +208,7 @@ export default function App() {
               let iconName;
 
               if (route.name === "Home") {
-                iconName = focused ? "home" : "home-outline";
+                iconName = focused ? "albums" : "albums-outline";
               } else if (route.name === "Newsfeed") {
                 iconName = focused ? "newspaper" : "newspaper-outline";
               } else if (route.name === "Chat") {
@@ -259,7 +260,7 @@ export default function App() {
               currentScreen: "HomeScreen",
             }}
             options={{
-              title: "Trang chủ",
+              title: "Khám phá",
               headerShown: true,
               headerBackButtonMenuEnabled: false,
               headerTransparent: true,

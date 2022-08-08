@@ -1,6 +1,6 @@
 {
   "name": "beagoo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "versionType": "Pre-release Beta",
   "scripts": {
     "start": "expo start --dev-client",
