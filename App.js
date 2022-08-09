@@ -1,5 +1,5 @@
 import React from "react";
-import { LogBox, StatusBar, Pressable, Animated, Easing } from "react-native";
+import { LogBox, StatusBar, Pressable, Animated, View } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -19,11 +19,13 @@ import { CropAvatar, cropViewRef } from "./screens/CropAvatar";
 import DefaultHeader from "./components/DefaultHeader";
 import { firebaseConfig } from "./firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { BlurView } from "expo-blur";
 import MainHeader from "./components/MainHeader";
 import SideMenu from "@chakrahq/react-native-side-menu";
 import MainSideMenu from "./components/MainSideMenu";
-import createAnimation from "./utils/createAnimation";
+import styles from "./assets/stylesheet/styles";
+import { enableFreeze } from "react-native-screens";
+
+enableFreeze(true);
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -45,6 +47,8 @@ export default function App() {
 
   const Stack = createNativeStackNavigator();
   const { isSignedIn, signOutUser } = useAuth();
+  // const isSignedIn = true;
+  // const signOutUser = () => {};
 
   StatusBar.setBarStyle("dark-content", true);
 
@@ -53,6 +57,7 @@ export default function App() {
   ]);
 
   const animatedValue1 = new Animated.Value(1);
+  const animatedValue2 = new Animated.Value(0);
 
   const check = async () => {
     if (
@@ -79,6 +84,7 @@ export default function App() {
     } else {
       console.log("no user-more");
     }
+    console.log("im a check function");
   };
 
   React.useEffect(() => {
@@ -94,9 +100,10 @@ export default function App() {
       }
     }
     check();
+    console.log("im a check effect");
   }, [isNewUser]);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     check();
     console.log("\n\nFirst Load\t" + new Date() + "\n====================");
     console.log("isSIGNEDIN: " + isSignedIn);
@@ -126,6 +133,7 @@ export default function App() {
     } else {
       console.log("user is not logged in");
     }
+    console.log("im a layout effect");
   }, [isSignedIn, isAddNeeded, isAvatarUpdateNeeded]);
 
   const ModalStack = createNativeStackNavigator();
@@ -191,6 +199,22 @@ export default function App() {
     </ModalStack.Navigator>
   );
 
+  const HomeScr = () => (
+    <HomeScreen
+      overlay={
+        <Animated.View
+          pointerEvents={"box-none"}
+          style={[
+            styles.fullStretch,
+            {
+              opacity: animatedValue2,
+            },
+          ]}
+        ></Animated.View>
+      }
+    />
+  );
+
   const MainScreen = ({ navigation }) => {
     const [currentScreen, setCurrentScreen] = React.useState("HomeScreen");
     const [setting, setSetting] = React.useState(false);
@@ -203,10 +227,12 @@ export default function App() {
         menuPosition="right"
         isOpen={setting}
         onChange={(isOpen) => setSetting(isOpen)}
-        onSliding={(value) => {
-          animatedValue1.setValue(1 - value);
-        }}
+        // onSliding={(value) => {
+        //   animatedValue1.setValue(1 - value);
+        //   animatedValue2.setValue(0.3 * value);
+        // }}
         openMenuOffset={300}
+        edgeHitWidth={300}
       >
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -254,14 +280,14 @@ export default function App() {
             tabBarLabelStyle: {
               fontWeight: "500",
             },
-            tabBarBackground: () => (
-              <BlurView tint="light" intensity={1000} style={{ flex: 1 }} />
-            ),
+            // tabBarBackground: () => (
+            //   <BlurView tint="light" intensity={1000} style={{ flex: 1 }} />
+            // ),
           })}
         >
           <Tab.Screen
             name="Home"
-            component={HomeScreen}
+            component={HomeScr}
             initialParams={{
               currentScreen: "HomeScreen",
             }}
@@ -277,6 +303,7 @@ export default function App() {
                     haveBottomBorder={false}
                     setSetting={setSetting}
                     animatedValue={animatedValue1}
+                    overlayValue={animatedValue2}
                   />
                 );
               },

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import firebase, { auth } from "firebase/compat/app";
+import firebase from "firebase/compat/app";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { firebaseConfig } from "../firebase";
 import * as RootNavigation from "../utils/RootNavigation";
@@ -80,10 +80,9 @@ export function useAuth() {
       .catch((error) => {
         console.log(error);
       });
-
-    return () => readStorage();
+    console.log("useEffect called");
   }, []);
-  return { auth, ...authState, signOutUser };
+  return { ...authState, signOutUser };
 }
 
 export default useAuth;
