@@ -21,19 +21,20 @@ const MainHeader = ({
   haveBottomBorder = true,
   setSetting,
   animatedValue,
-  overlayValue,
 }) => {
   const [uid, setUid] = React.useState("");
 
   React.useEffect(() => {
     AsyncStorage.getItem("user-more").then((data) => {
-      setUid(JSON.parse(data).uid);
+      if (data != null && data != "null") {
+        setUid(JSON.parse(data).uid);
+      }
     });
   });
 
   return (
     <>
-      <Animated.View style={{ opacity: animatedValue }}>
+      <View>
         <BlurView
           intensity={100}
           className={`h-[${
@@ -69,7 +70,7 @@ const MainHeader = ({
             </View>
           </SafeAreaView>
         </BlurView>
-      </Animated.View>
+      </View>
     </>
   );
 };

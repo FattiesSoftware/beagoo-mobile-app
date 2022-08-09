@@ -47,13 +47,6 @@ export function useAuth() {
     setAuthState({
       isSignedIn: false,
     });
-    setTimeout(() => {
-      RootNavigation.navigate("SignIn");
-      setAuthState({
-        isSignedIn: false,
-      });
-      console.log(authState);
-    }, 1000);
   };
 
   useEffect(() => {

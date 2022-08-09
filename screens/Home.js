@@ -49,6 +49,7 @@ const HomeScreen = ({ overlay }) => {
             <Text className="text-white">Sign Out</Text>
           </TouchableOpacity>
           <Image source={require("../assets/welcome/welcome-banner.jpg")} />
+          <Image source={require("../assets/welcome/welcome-banner.jpg")} />
         </ScrollView>
       </SafeAreaView>
       {overlay}

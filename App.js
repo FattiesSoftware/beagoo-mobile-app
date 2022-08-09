@@ -1,5 +1,12 @@
 import React from "react";
-import { LogBox, StatusBar, Pressable, Animated, View } from "react-native";
+import {
+  LogBox,
+  StatusBar,
+  Pressable,
+  Animated,
+  View,
+  Dimensions,
+} from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -38,6 +45,8 @@ const MyTheme = {
     background: "white",
   },
 };
+
+const window = Dimensions.get("window");
 
 export default function App() {
   const [isSplashReady, setIsSplashReady] = React.useState(false);
@@ -227,12 +236,12 @@ export default function App() {
         menuPosition="right"
         isOpen={setting}
         onChange={(isOpen) => setSetting(isOpen)}
-        // onSliding={(value) => {
-        //   animatedValue1.setValue(1 - value);
-        //   animatedValue2.setValue(0.3 * value);
-        // }}
+        onSliding={(value) => {
+          animatedValue1.setValue(1 - value);
+          animatedValue2.setValue(0.3 * value);
+        }}
         openMenuOffset={300}
-        edgeHitWidth={300}
+        edgeHitWidth={window.width}
       >
         <Tab.Navigator
           screenOptions={({ route }) => ({
