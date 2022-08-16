@@ -27,7 +27,7 @@ const HomeScreen = ({ overlay }) => {
     <>
       <SafeAreaView className="bg-white flex-1">
         <ScrollView
-          className="bg-white flex-1 mx-4 pt-20 mt-[-10px]"
+          className="bg-white flex-1 px-4 pt-20 mt-[-10px]"
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
