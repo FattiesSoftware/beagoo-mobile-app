@@ -58,18 +58,8 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>FacebookAppID</key>
-	<string>1087511252159238</string>
-	<key>FacebookDisplayName</key>
-	<string>Beagoo</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Cho phép Beagoo được sử dụng Camera của bạn. Chúng tôi tôn trọng quyền riêng tư của bạn.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Cho phép Beagoo được sử dụng Microphone của bạn. Chúng tôi tôn trọng quyền riêng tư của bạn.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Cho phép Beagoo được truy cập vào thư viện ảnh của bạn. Chúng tôi tôn trọng quyền riêng tư của bạn.</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Mã định danh của bạn sẽ được sử dụng để cung cấp quảng cáo theo sở thích và nhìn thấy ít những quảng cáo lặp lại</string>
+	<string>This identifier will be used to deliver personalized ads to you.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -111,23 +101,5 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>AntDesign.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>Zocial.ttf</string>
-		<string>Fontisto.ttf</string>
-	</array>
 </dict>
 </plist>

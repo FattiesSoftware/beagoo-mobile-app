@@ -1,6 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
+   <Group
+      location = "group:../node_modules/progress-hud"
+      name = "progress-hud">
+      <FileRef
+         location = "group:index.js">
+      </FileRef>
+      <Group
+         location = "group:ios"
+         name = "ios">
+         <FileRef
+            location = "group:RNProgressHud.m">
+         </FileRef>
+         <FileRef
+            location = "group:RNProgressHud.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:RNProgressHud.h">
+         </FileRef>
+         <FileRef
+            location = "group:RNProgressHud.xcworkspace">
+         </FileRef>
+      </Group>
+      <FileRef
+         location = "group:README.md">
+      </FileRef>
+      <FileRef
+         location = "group:RNProgressHud.podspec">
+      </FileRef>
+      <FileRef
+         location = "group:package.json">
+      </FileRef>
+      <Group
+         location = "group:android"
+         name = "android">
+         <FileRef
+            location = "group:build.gradle">
+         </FileRef>
+         <Group
+            location = "group:src"
+            name = "src">
+            <Group
+               location = "group:main"
+               name = "main">
+               <Group
+                  location = "group:res"
+                  name = "res">
+                  <Group
+                     location = "group:layout"
+                     name = "layout">
+                     <FileRef
+                        location = "group:kprogresshud_hud.xml">
+                     </FileRef>
+                  </Group>
+                  <Group
+                     location = "group:values"
+                     name = "values">
+                     <FileRef
+                        location = "group:colors.xml">
+                     </FileRef>
+                  </Group>
+                  <Group
+                     location = "group:drawable-xhdpi"
+                     name = "drawable-xhdpi">
+                     <FileRef
+                        location = "group:ic_error.png">
+                     </FileRef>
+                     <FileRef
+                        location = "group:ic_info.png">
+                     </FileRef>
+                     <FileRef
+                        location = "group:ic_success.png">
+                     </FileRef>
+                  </Group>
+                  <Group
+                     location = "group:drawable-xxhdpi"
+                     name = "drawable-xxhdpi">
+                     <FileRef
+                        location = "group:ic_error.png">
+                     </FileRef>
+                     <FileRef
+                        location = "group:ic_info.png">
+                     </FileRef>
+                     <FileRef
+                        location = "group:ic_success.png">
+                     </FileRef>
+                  </Group>
+                  <Group
+                     location = "group:drawable-hdpi"
+                     name = "drawable-hdpi">
+                     <FileRef
+                        location = "group:ic_error.png">
+                     </FileRef>
+                     <FileRef
+                        location = "group:ic_info.png">
+                     </FileRef>
+                     <FileRef
+                        location = "group:ic_success.png">
+                     </FileRef>
+                  </Group>
+                  <Group
+                     location = "group:drawable-mdpi"
+                     name = "drawable-mdpi">
+                     <FileRef
+                        location = "group:ic_error.png">
+                     </FileRef>
+                     <FileRef
+                        location = "group:ic_info.png">
+                     </FileRef>
+                     <FileRef
+                        location = "group:ic_success.png">
+                     </FileRef>
+                  </Group>
+                  <Group
+                     location = "group:drawable-xxxhdpi"
+                     name = "drawable-xxxhdpi">
+                     <FileRef
+                        location = "group:kprogresshud_spinner.png">
+                     </FileRef>
+                  </Group>
+               </Group>
+               <FileRef
+                  location = "group:AndroidManifest.xml">
+               </FileRef>
+               <Group
+                  location = "group:java"
+                  name = "java">
+                  <Group
+                     location = "group:com"
+                     name = "com">
+                     <Group
+                        location = "group:progresshud"
+                        name = "progresshud">
+                        <FileRef
+                           location = "group:SpinView.java">
+                        </FileRef>
+                        <FileRef
+                           location = "group:KProgressHUD.java">
+                        </FileRef>
+                        <FileRef
+                           location = "group:BarView.java">
+                        </FileRef>
+                        <FileRef
+                           location = "group:Indeterminate.java">
+                        </FileRef>
+                        <FileRef
+                           location = "group:Helper.java">
+                        </FileRef>
+                        <FileRef
+                           location = "group:RNProgressHudPackage.java">
+                        </FileRef>
+                        <FileRef
+                           location = "group:Determinate.java">
+                        </FileRef>
+                        <FileRef
+                           location = "group:AnnularView.java">
+                        </FileRef>
+                        <FileRef
+                           location = "group:RNProgressHudModule.java">
+                        </FileRef>
+                        <FileRef
+                           location = "group:BackgroundLayout.java">
+                        </FileRef>
+                        <FileRef
+                           location = "group:PieView.java">
+                        </FileRef>
+                     </Group>
+                  </Group>
+               </Group>
+            </Group>
+         </Group>
+      </Group>
+      <FileRef
+         location = "group:index.d.ts">
+      </FileRef>
+   </Group>
    <FileRef
       location = "group:Beagoo.xcodeproj">
    </FileRef>
